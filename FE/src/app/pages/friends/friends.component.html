@@ -1,12 +1,16 @@
 <div class="friends-page">
-  <header class="friends-header">
-    <h1>Trekker</h1>
-    <button class="btn-add" (click)="addFriend()">
-      Pievienot jaunu draugu
-    </button>
-  </header>
+  <button class="btn-add">Pievienot jaunu draugu</button>
 
-  <div class="friends-grid">
+  <div class="grid">
+    <div class="friend-card" *ngFor="let f of friends">
+      <img [src]="f.image" alt="{{ f.name }}" class="thumb" />
+      <div class="name">{{ f.name }}</div>
+    </div>
+  </div>
+</div>
+
+
+<!--<div class="friends-grid">
     <div class="friend-card" *ngFor="let friend of friends">
       <div class="thumb">
         <img [src]="friend.avatar || placeholder" alt="{{friend.name}}" />
@@ -15,6 +19,4 @@
         <p class="name">{{ friend.name }}</p>
       </div>
     </div>
-  </div>
-</div>
-
+  </div>-->

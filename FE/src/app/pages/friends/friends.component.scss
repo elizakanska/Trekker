@@ -1,40 +1,24 @@
 .friends-page {
-  padding: 1.5rem;
-  background: #d6c38f;
-  min-height: 100vh;
-  box-sizing: border-box;
+  padding: 2rem;
 
-  .friends-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .btn-add {
+    background: #2e5939;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
     margin-bottom: 1.5rem;
-
-    h1 {
-      margin: 0;
-      color: #2e5939;
-      font-size: 1.75rem;
-    }
-
-    .btn-add {
-      background: #2e5939;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.2s;
-
-      &:hover {
-        background: darken(#2e5939, 10%);
-      }
-    }
+    transition: background 0.2s, transform 0.1s;
+    &:hover { background: darken(#2e5939, 10%); }
+    &:active { transform: scale(0.97); }
   }
 
-  .friends-grid {
+  .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
   }
 
   .friend-card {
@@ -45,39 +29,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 0.75rem;
-    cursor: pointer;
+    padding-bottom: 0.5rem;
     transition: transform 0.2s, box-shadow 0.2s;
-
+    cursor: pointer;
     &:hover {
       transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .thumb {
       width: 100%;
-      padding-top: 75%; /* 4:3 aspect ratio */
+      height: 180px;
+      object-fit: cover;
       background: #eee;
-      position: relative;
-
-      img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
     }
 
-    .info {
+    .name {
       margin-top: 0.75rem;
-      .name {
-        margin: 0;
-        color: #2e5939;
-        font-weight: 500;
-        text-align: center;
-      }
+      font-size: 0.95rem;
+      color: #2e5939;
+      text-align: center;
+      padding: 0 0.5rem;
     }
   }
 }

@@ -1,49 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { Router }             from '@angular/router';
+import { Component }      from '@angular/core';
+import { CommonModule }   from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 
-interface Trail {
-  id:   number;
-  name: string;
+interface TrailOption {
+  title: string;
+  css:   string;
+  route: string;
 }
 
 @Component({
   selector: 'app-choose-trail',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './choose-trail.component.html',
-  styleUrls: ['./choose-trail.component.scss']
+  styleUrls:   ['./choose-trail.component.scss']
 })
-export class ChooseTrailComponent implements OnInit {
-  trails: Trail[] = [];
-  index = 0;
+export class ChooseTrailComponent {
+  options: TrailOption[] = [
+    {
+      title: 'Takas nosaukums 1',
+      css:   'option-primary',
+      route: '/trail/1'
+    },
+    {
+      title: 'Takas nosaukums 2',
+      css:   'option-accent',
+      route: '/trail/2'
+    }
+  ];
 
   constructor(private router: Router) {}
 
-  ngOnInit() {
-    // Replace this with real data fetch
-    this.trails = [
-      { id: 1, name: 'Takas nosaukums 1' },
-      { id: 2, name: 'Takas nosaukums 2' },
-      { id: 3, name: 'Takas nosaukums 3' },
-      { id: 4, name: 'Takas nosaukums 4' },
-      // …etc
-    ];
-  }
-
-  get pair(): Trail[] {
-    // Grab two at a time, wrapping if needed
-    const first  = this.trails[this.index % this.trails.length];
-    const second = this.trails[(this.index + 1) % this.trails.length];
-    return [first, second];
-  }
-
-  choose(trail: Trail) {
-    console.log('User chose trail', trail);
-    // TODO: record in session/db
-    // Move to next pair
-    this.index = (this.index + 2) % this.trails.length;
-  }
-
-  logout() {
-    // TODO: your authService.logout();
-    this.router.navigate(['/login']);
+  select(opt: TrailOption) {
+    this.router.navigate([opt.route]);
   }
 }
+

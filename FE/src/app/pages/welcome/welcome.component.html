@@ -1,89 +1,43 @@
-<div class="layout">
-  <!-- Sidebar -->
-  <nav class="sidebar">
-    <div class="logo">
-      <!-- Make sure this file exists: src/assets/logo.png -->
-      <img src="assets/logo.png" alt="Trekker logo" />
+<div class="welcome-page">
+  <h2 class="heading">Izvēlieties, ko darīt!</h2>
+
+  <div class="card-grid">
+    <div class="card-item" *ngFor="let card of cards">
+      <div
+        class="card"
+        [ngClass]="card.css"
+        role="button"
+        tabindex="0"
+        (click)="go(card)"
+        (keyup.enter)="go(card)"
+      >
+        <h3>{{ card.title }}</h3>
+      </div>
+      <p class="subtitle">{{ card.subtitle }}</p>
     </div>
-    <ul class="nav-list">
-      <li routerLinkActive="active"><a routerLink="/">Sākums</a></li>
-      <li routerLinkActive="active"><a routerLink="/search">Meklē taku</a></li>
-      <li routerLinkActive="active"><a routerLink="/session">Savienojies</a></li>
-      <li routerLinkActive="active"><a routerLink="/friends">Draugi</a></li>
-      <li routerLinkActive="active"><a routerLink="/favorites">Mīļākās takas</a></li>
-    </ul>
-  </nav>
-
-  <!-- Main content -->
-  <main class="content">
-    <header class="header">
-      <h1>Trekker</h1>
-      <button class="btn-logout">Atslēgties</button>
-    </header>
-
-    <section class="cards">
-      <div class="card card-primary">
-        <h2>Sāc izvēlēties</h2>
-        <p>Sāciet kopīgu dabas taku izvēli!</p>
-      </div>
-      <div class="card card-accent">
-        <h2>Savienojies</h2>
-        <p>Izveidojiet savienojumu, pirms sākt!</p>
-      </div>
-      <div class="card card-success">
-        <h2>Mīļākās takas</h2>
-        <p>Atsauc atmiņā iecienītākās takas!</p>
-      </div>
-      <div class="card card-dark">
-        <h2>Draugi</h2>
-        <p>Pievieno draugus!</p>
-      </div>
-    </section>
-  </main>
+  </div>
 </div>
 
 
-<!--<div class="layout">-->
-<!--  &lt;!&ndash; Sidebar &ndash;&gt;-->
-<!--  <nav class="sidebar">-->
-<!--    <div class="logo">-->
-<!--      <img src="assets/logo.png" alt="Trekker logo" />-->
-<!--    </div>-->
-<!--    <ul class="nav-list">-->
-<!--      <li routerLinkActive="active"><a routerLink="/">Sākums</a></li>-->
-<!--      <li routerLinkActive="active"><a routerLink="/search">Meklē taku</a></li>-->
-<!--      <li routerLinkActive="active"><a routerLink="/session">Savienojies</a></li>-->
-<!--      <li routerLinkActive="active"><a routerLink="/friends">Draugi</a></li>-->
-<!--      <li routerLinkActive="active"><a routerLink="/favorites">Mīļākās takas</a></li>-->
-<!--    </ul>-->
-<!--  </nav>-->
 
-<!--  &lt;!&ndash; Main content &ndash;&gt;-->
-<!--  <main class="content">-->
-<!--    <header class="header">-->
-<!--      <h1>Trekker</h1>-->
-<!--      <button class="btn-logout">Atslēgties</button>-->
-<!--    </header>-->
+<!--<div class="welcome-page">-->
+<!--  <h2 class="heading">Izvēlieties, ko darīt!</h2>-->
 
-<!--    <div class="cards">-->
-<!--      <div class="card card-primary">-->
-<!--        <h2>Sāc izvēlēties</h2>-->
-<!--        <p>Sāciet kopīgu dabas taku izvēli!</p>-->
-<!--      </div>-->
-<!--      <div class="card card-accent">-->
-<!--        <h2>Savienojies</h2>-->
-<!--        <p>Izveidojiet savienojumu pirms sākt!</p>-->
-<!--      </div>-->
-<!--      <div class="card card-success">-->
-<!--        <h2>Mīļākās takas</h2>-->
-<!--        <p>Atsauc atmiņā iecienītākās takas!</p>-->
-<!--      </div>-->
-<!--      <div class="card card-dark">-->
-<!--        <h2>Draugi</h2>-->
-<!--        <p>Pievieno draugus!</p>-->
-<!--      </div>-->
+<!--  <div class="cards">-->
+<!--    <div-->
+<!--      class="card"-->
+<!--      *ngFor="let card of cards; let i = index"-->
+<!--      [ngClass]="card.css"-->
+<!--      role="button"-->
+<!--      tabindex="0"-->
+<!--      (click)="go(card)"-->
+<!--      (keyup.enter)="go(card)"-->
+<!--    >-->
+<!--      <h3>{{ card.title }}</h3>-->
 <!--    </div>-->
-<!--  </main>-->
+<!--  </div>-->
+
+<!--  <div class="subtitles">-->
+<!--    <p *ngFor="let card of cards">{{ card.subtitle }}</p>-->
+<!--  </div>-->
 <!--</div>-->
-
-

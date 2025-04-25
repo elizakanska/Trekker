@@ -1,86 +1,70 @@
 // src/app/pages/welcome/welcome.component.ts
-import { Component }  from '@angular/core';
-import { Router }     from '@angular/router';
 
-interface NavLink {
-  label: string;
-  path:  string;
-  icon?: string;    // if you want to show an icon
-}
+import { Component } from '@angular/core';
+import { Router }    from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
+// 1) Define the shape of each card
 interface Card {
-  title: string;
-  desc:  string;
-  path:  string;
-  css:   string;    // to pick up card-primary, etc.
+  title:    string;
+  subtitle: string;
+  route:    string;
+  css:      string;
 }
 
 @Component({
   selector: 'app-welcome',
+  standalone: true,
+  imports: [ CommonModule, RouterModule ],
   templateUrl: './welcome.component.html',
-  styleUrls: ['./welcome.component.scss']
+  styleUrls:   ['./welcome.component.scss']
 })
 export class WelcomeComponent {
-  // Sidebar items
-  navLinks: NavLink[] = [
-    { label: 'Sākums',      path: '/welcome',  icon: 'home' },
-    { label: 'Meklē taku',  path: '/search',   icon: 'search' },
-    { label: 'Savienojies', path: '/session',  icon: 'rss' },
-    { label: 'Draugi',      path: '/friends',  icon: 'smile' },
-    { label: 'Mīļākās takas', path: '/favorites', icon: 'list' }
-  ];
-
-  // Cards
+  // 2) Declare and initialize your cards array
   cards: Card[] = [
-    { title: 'Sāc izvēlēties',   desc: 'Sāciet kopīgu dabas taku izvēli!', path: '/search',    css: 'card-primary' },
-    { title: 'Savienojies',      desc: 'Izveidojiet savienojumu, pirms sākt!', path: '/session',   css: 'card-accent'  },
-    { title: 'Mīļākās takas',    desc: 'Atsauc atmiņā iecienītākās takas!', path: '/favorites',  css: 'card-success' },
-    { title: 'Draugi',           desc: 'Pievieno draugus!', path: '/friends',     css: 'card-dark'    }
+    {
+      title:    'Sāc izvēlēties',
+      subtitle: 'Sāciet kopīgu dabas taku izvēli!',
+      route:    '/session',
+      css:      'card-primary'
+    },
+    {
+      title:    'Savienojies',
+      subtitle: 'Izveidojiet savienojumu pirms sākt!',
+      route:    '/session',
+      css:      'card-accent'
+    },
+    {
+      title:    'Mīļākās takas',
+      subtitle: 'Atsauc atmiņā iecienītākās takas!',
+      route:    '/favourites',
+      css:      'card-success'
+    },
+    {
+      title:    'Draugi',
+      subtitle: 'Pievieno draugus!',
+      route:    '/friends',
+      css:      'card-dark'
+    }
   ];
 
   constructor(private router: Router) {}
 
-  /** navigate to any of your app’s routes */
-  navigate(path: string) {
-    this.router.navigate([path]);
-  }
-
-  /** highlight active sidebar item */
-  isActive(path: string): boolean {
-    // exact match; tweak options if you want prefix‐matching, etc.
-    return this.router.url === path;
-  }
-
-  /** called when “Atslēgties” clicked */
-  logout() {
-    // TODO: call your AuthService.logout()
-    // e.g. this.authService.logout();
-    // then redirect to login
-    this.router.navigate(['/login']);
+  // 3) Navigate when a card is clicked
+  go(card: Card) {
+    this.router.navigate([card.route]);
   }
 }
 
 
-
 // import { Component } from '@angular/core';
 //
 // @Component({
 //   selector: 'app-welcome',
-//   imports: [],
 //   templateUrl: './welcome.component.html',
 //   styleUrl: './welcome.component.scss'
 // })
 // export class WelcomeComponent {
-//
+//   constructor() {}
 // }
-// import { Component } from '@angular/core';
-//
-// @Component({
-//   selector: 'app-welcome',
-//   templateUrl: './welcome.component.html',
-//   styleUrls: ['./welcome.component.scss']
-// })
-// export class WelcomeComponent {
-//   // hook up methods for logout, navigation, etc. here
-// }
-

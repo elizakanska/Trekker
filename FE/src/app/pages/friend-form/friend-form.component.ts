@@ -1,41 +1,42 @@
-// src/app/pages/friends/friend-form.component.ts
-import { Component }             from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router }                from '@angular/router';
+import { Component }          from '@angular/core';
+import {ReactiveFormsModule, FormBuilder, Validators, FormGroup} from '@angular/forms';
+import { CommonModule }       from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-friend-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './friend-form.component.html',
-  styleUrls: ['./friend-form.component.scss']
+  styleUrls:   ['./friend-form.component.scss']
 })
 export class FriendFormComponent {
-  form: FormGroup;
-
-  constructor(
-    private fb: FormBuilder,
-    private router: Router
-  ) {
+  form!: FormGroup;   // declare but don’t inline-init
+  constructor(private fb: FormBuilder, private router: Router) {
     this.form = this.fb.group({
       name:    ['', Validators.required],
-      message: ['', Validators.required]
+      message: ['Savienojamies un izvēlamies taku!', Validators.required]
     });
+  }
+
+  // form = this.fb.group({
+  //   name:    ['', Validators.required],
+  //   message: ['Savienojamies un izvēlamies taku!', Validators.required]
+  // });
+
+  cancel() {
+    this.router.navigate(['/friends']);
   }
 
   submit() {
     if (this.form.invalid) return;
     const { name, message } = this.form.value;
-
-    // TODO: call your backend to send the invite
-    console.log('Inviting', name, 'with message:', message);
-
-    // After success, navigate back to friends list
-    this.router.navigate(['/friends']);
-  }
-
-  cancel() {
+    console.log('Invite sent to', name, 'with message', message);
+    // TODO: call your backend
     this.router.navigate(['/friends']);
   }
 }
+
 
 
 
@@ -48,5 +49,6 @@ export class FriendFormComponent {
 //   styleUrl: './friend-form.component.scss'
 // })
 // export class FriendFormComponent {
+//   // form: FormGroup;
 //
 // }

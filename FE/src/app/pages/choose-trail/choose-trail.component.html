@@ -1,37 +1,17 @@
-<div class="layout">
-  <!-- Sidebar -->
-  <nav class="sidebar">
-    <div class="logo">
-      <img src="assets/logo.png" alt="Trekker logo" />
-    </div>
-    <ul class="nav-list">
-      <li routerLinkActive="active"><a routerLink="/">Sākums</a></li>
-      <li routerLinkActive="active"><a routerLink="/search">Meklē taku</a></li>
-      <li routerLinkActive="active"><a routerLink="/session">Savienojies</a></li>
-      <li routerLinkActive="active"><a routerLink="/friends">Draugi</a></li>
-      <li routerLinkActive="active"><a routerLink="/favorites">Mīļākās takas</a></li>
-    </ul>
-  </nav>
+<div class="choose-trail">
+  <h2 class="heading">Izvēlieties dabas taku, kura Jums patīk!</h2>
 
-  <!-- Main content -->
-  <main class="content">
-    <header class="header">
-      <h1>Izvēlieties dabas taku, kura Jums patīk!</h1>
-      <button class="btn-logout" (click)="logout()">Atslēgties</button>
-    </header>
-
-    <div class="cards">
-      <div
-        class="card"
-        *ngFor="let trail of pair; let i = index"
-        [ngClass]="i === 0 ? 'card-primary' : 'card-accent'"
-        role="button"
-        tabindex="0"
-        (click)="choose(trail)"
-        (keyup.enter)="choose(trail)"
-      >
-        <h2>{{ trail.name }}</h2>
-      </div>
+  <div class="options-grid">
+    <div
+      class="option-card"
+      *ngFor="let opt of options"
+      [ngClass]="opt.css"
+      role="button"
+      tabindex="0"
+      (click)="select(opt)"
+      (keyup.enter)="select(opt)"
+    >
+      <h3>{{ opt.title }}</h3>
     </div>
-  </main>
+  </div>
 </div>

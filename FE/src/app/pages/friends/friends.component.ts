@@ -1,45 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router';
+import { Component }    from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 interface Friend {
-  id:      number;
-  name:    string;
-  avatar?: string;
+  name:  string;
+  image: string;
 }
 
 @Component({
   selector: 'app-friends',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './friends.component.html',
-  styleUrls: ['./friends.component.scss']
+  styleUrls:   ['./friends.component.scss']
 })
-export class FriendsComponent implements OnInit {
-  friends: Friend[] = [];
-  placeholder = 'https://via.placeholder.com/160x120?text=No+Image';
-
-  constructor(private router: Router) {}
-
-  ngOnInit() {
-    // TODO: fetch from your backend instead
-    this.friends = [
-      { id: 1, name: 'Jānis Programmētājs' },
-      { id: 2, name: 'Pēteris Testētājs' },
-      { id: 3, name: 'Māris Sistēmanalītiķis' },
-      { id: 4, name: 'Frīdrihs Klients' },
-      { id: 5, name: 'Nauris Vadītājs' },
-      { id: 6, name: 'Guntis Juniors' }
-    ];
-  }
-
-  /** navigate to friend details or open edit */
-  viewFriend(friend: Friend) {
-    this.router.navigate(['/friends', friend.id]);
-  }
-
-  /** add a new friend */
-  addFriend() {
-    this.router.navigate(['/friends', 'new']);
-  }
+export class FriendsComponent {
+  // static list
+  friends: Friend[] = [
+    { name: 'Jānis Programmētājs',    image: 'https://via.placeholder.com/180?text=Img' },
+    { name: 'Pēteris Testētājs',       image: 'https://via.placeholder.com/180?text=Img' },
+    { name: 'Māris Sistēmanalītiķis', image: 'https://via.placeholder.com/180?text=Img' },
+    { name: 'Frīdrihs Klients',       image: 'https://via.placeholder.com/180?text=Img' },
+    { name: 'Nauris Vadītājs',        image: 'https://via.placeholder.com/180?text=Img' },
+    { name: 'Guntis Juniors',         image: 'https://via.placeholder.com/180?text=Img' }
+  ];
 }
+
 
 
 

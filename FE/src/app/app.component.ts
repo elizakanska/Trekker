@@ -14,9 +14,10 @@ import {NzIconDirective} from 'ng-zorro-antd/icon';
   selector: 'app-root',
   imports: [RouterLink, RouterOutlet, NzLayoutComponent, NzSiderComponent, NzMenuDirective, NzMenuItemComponent, NzIconDirective, NzHeaderComponent, NzContentComponent, NzFooterComponent],
   templateUrl: './app.component.html',
+  standalone: true,
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   isCollapsed = false;
-  title: 'Task Manager' | undefined;
+  title: 'Trekker' | undefined;
 }

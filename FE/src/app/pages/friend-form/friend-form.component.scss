@@ -1,91 +1,90 @@
-/* src/app/pages/friends/friend-form.component.scss */
+$form-bg: #fff;
+$shadow: rgba(0,0,0,0.15);
+$primary: #4a90e2;
+$text: #2e5939;
+$error: #e25c5c;
 
-.form-container {
+.form-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
   padding: 2rem;
-  background: #d6c38f;
-  min-height: 100vh;
-  box-sizing: border-box;
 }
 
-.card {
-  background: #fff;
-  border-radius: 8px;
+form {
+  background: $form-bg;
   padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px $shadow;
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 480px;
+  box-sizing: border-box;
 
   h2 {
     margin-top: 0;
+    color: $text;
+    font-size: 1.5rem;
     margin-bottom: 1.5rem;
-    color: #2e5939;
-    text-align: center;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
   }
 
   label {
-    margin-top: 0.75rem;
+    display: block;
     margin-bottom: 0.25rem;
-    color: #555;
+    color: $text;
     font-weight: 500;
+    margin-top: 1rem;
   }
 
-  input,
-  textarea {
+  input, textarea {
+    width: 100%;
     padding: 0.75rem;
-    font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 1rem;
     box-sizing: border-box;
+    resize: vertical;
   }
 
-  textarea {
-    resize: vertical;
+  .error {
+    color: $error;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
   }
 
   .actions {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-top: 1.5rem;
-  }
-
-  .btn-cancel,
-  .btn-submit {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
   }
 
   .btn-cancel {
     background: transparent;
-    color: #555;
-    transition: color 0.2s;
-
-    &:hover {
-      color: #000;
-    }
+    border: none;
+    color: $text;
+    font-size: 1rem;
+    cursor: pointer;
   }
 
   .btn-submit {
-    background: #4a90e2;
-    color: #fff;
-    transition: background 0.2s;
+    background: $primary;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+
+    &:hover:not(:disabled) {
+      background: darken($primary, 8%);
+    }
+    &:active:not(:disabled) {
+      transform: scale(0.97);
+    }
 
     &:disabled {
-      background: #7aabd4;
+      background: #9bbce4;
       cursor: not-allowed;
-    }
-    &:hover:not(:disabled) {
-      background: #3a78c1;
     }
   }
 }
