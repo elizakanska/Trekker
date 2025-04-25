@@ -1,0 +1,37 @@
+<!-- src/app/pages/signup/signup.component.html -->
+<div class="signup-container">
+  <h1 class="app-title">Trekker</h1>
+  <div class="card">
+    <h2>Izveido kontu</h2>
+    <p class="subtitle">ievadi savu e-pastu, lai uzsāktu pieteikšanos</p>
+
+    <form name="signupForm" class="signup-form" ng-submit="vm.submit()" novalidate>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="email@domain.com"
+        required
+      />
+      <button type="submit" class="btn btn-submit" [disabled]="form.invalid">
+        Pieteikties ar e-pastu
+      </button>
+    </form>
+
+    <div class="divider">vai turpināt ar</div>
+
+    <button class="btn btn-google" (click)="continueWithGoogle()">
+      <img
+        src="assets/google-icon.svg"
+        alt="Google logo"
+        class="google-icon"
+      />
+      Google
+    </button>
+
+    <p class="legal">
+      By clicking continue, you agree to our
+      <a href="/terms" target="_blank">Terms of Service</a> and
+      <a href="/privacy" target="_blank">Privacy Policy</a>
+    </p>
+  </div>
+</div>

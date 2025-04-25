@@ -1,0 +1,241 @@
+<div class="layout">
+  <!-- Sidebar omitted for brevity… reuse your existing sidebar HTML here -->
+
+  <main class="content">
+    <header class="header">
+      <h1>Trekker</h1>
+      <button class="btn-logout" (click)="onLogout()">Atslēgties</button>
+    </header>
+
+    <div class="trail-list">
+      <ng-container *ngIf="favourites$ | async as favs; else loading">
+        <div class="trail-item" *ngFor="let trail of favs">
+          <img [src]="trail.image" [alt]="trail.name" class="trail-thumb" />
+          <div class="trail-info">
+            <h3>{{ trail.name }}</h3>
+            <p>{{ trail.desc }}</p>
+            <div class="actions">
+              <button class="btn-view" (click)="onView(trail)">Apskatīt</button>
+              <button class="btn-remove" (click)="onRemove(trail)">Noņemt</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #loading>
+        <p>Ielādējas…</p>
+      </ng-template>
+    </div>
+  </main>
+</div>
+
+
+
+<!--<div class="layout">-->
+<!--  &lt;!&ndash; Sidebar &ndash;&gt;-->
+<!--  <nav class="sidebar">-->
+<!--    <div class="logo">-->
+<!--      <img src="assets/logo.png" alt="Trekker logo" />-->
+<!--    </div>-->
+<!--    <ul class="nav-list">-->
+<!--      <li ng-class="{active: vm.isActive('/')}">-->
+<!--        <a href="#!/">Sākums</a>-->
+<!--      </li>-->
+<!--      <li ng-class="{active: vm.isActive('/search')}">-->
+<!--        <a href="#!/search">Meklē taku</a>-->
+<!--      </li>-->
+<!--      <li ng-class="{active: vm.isActive('/session')}">-->
+<!--        <a href="#!/session">Savienojies</a>-->
+<!--      </li>-->
+<!--      <li ng-class="{active: vm.isActive('/friends')}">-->
+<!--        <a href="#!/friends">Draugi</a>-->
+<!--      </li>-->
+<!--      <li ng-class="{active: vm.isActive('/favorites')}">-->
+<!--        <a href="#!/favorites">Mīļākās takas</a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </nav>-->
+
+<!--  &lt;!&ndash; Main content &ndash;&gt;-->
+<!--  <main class="content">-->
+<!--    <header class="header">-->
+<!--      <h1>Trekker</h1>-->
+<!--      <button class="btn-logout" ng-click="vm.logout()">Atslēgties</button>-->
+<!--    </header>-->
+
+<!--    <div class="trail-list">-->
+<!--      <div class="trail-item" ng-repeat="trail in vm.favTrails">-->
+<!--        <img ng-src="{{trail.image}}" alt="{{trail.name}}" class="trail-thumb" />-->
+<!--        <div class="trail-info">-->
+<!--          <h3>{{trail.name}}</h3>-->
+<!--          <p>{{trail.desc}}</p>-->
+<!--          <button class="btn-view" ng-click="vm.view(trail)">Apskatīt</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </main>-->
+<!--</div>-->
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="lv" ng-app="trekkerApp">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8" />-->
+<!--  <title>Trekker – Mīļākās takas</title>-->
+<!--  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>-->
+<!--  <style>-->
+<!--    /* page & layout */-->
+<!--    body {-->
+<!--      margin: 0; font-family: sans-serif;-->
+<!--    }-->
+<!--    .layout {-->
+<!--      display: flex; height: 100vh; background: #d6c38f;-->
+<!--    }-->
+<!--    /* sidebar */-->
+<!--    .sidebar {-->
+<!--      width: 200px; background: #c5b26f; padding: 1rem; box-sizing: border-box;-->
+<!--    }-->
+<!--    .sidebar .logo {-->
+<!--      text-align: center; margin-bottom: 2rem;-->
+<!--    }-->
+<!--    .sidebar .logo img { max-width: 80px; }-->
+<!--    .sidebar .nav-list { list-style: none; padding: 0; }-->
+<!--    .sidebar .nav-list li { margin-bottom: .75rem; }-->
+<!--    .sidebar .nav-list li a {-->
+<!--      display: block; padding: .5rem 1rem; border-radius: 4px;-->
+<!--      color: #2e5939; text-decoration: none; transition: background .2s;-->
+<!--    }-->
+<!--    .sidebar .nav-list li.active a,-->
+<!--    .sidebar .nav-list li a:hover {-->
+<!--      background: rgba(46,89,57,0.2);-->
+<!--      font-weight: bold;-->
+<!--    }-->
+<!--    /* main content */-->
+<!--    .content {-->
+<!--      flex: 1; padding: 1.5rem; box-sizing: border-box; overflow-y: auto;-->
+<!--    }-->
+<!--    .header {-->
+<!--      display: flex; justify-content: space-between; align-items: center;-->
+<!--      margin-bottom: 1.5rem;-->
+<!--    }-->
+<!--    .header h1 {-->
+<!--      margin: 0; color: #2e5939; font-size: 1.75rem;-->
+<!--    }-->
+<!--    .btn-logout {-->
+<!--      background: #2e5939; color: #fff; border: none;-->
+<!--      padding: .5rem 1rem; border-radius: 4px; cursor: pointer;-->
+<!--      transition: background .2s;-->
+<!--    }-->
+<!--    .btn-logout:hover { background: #25442b; }-->
+
+<!--    /* trail list */-->
+<!--    .trail-list {-->
+<!--      display: flex; flex-direction: column; gap: 1rem;-->
+<!--    }-->
+<!--    .trail-item {-->
+<!--      display: flex; background: #fff; border-radius: 8px;-->
+<!--      box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden;-->
+<!--    }-->
+<!--    .trail-thumb {-->
+<!--      width: 120px; height: 80px; object-fit: cover;-->
+<!--      background: #eee;-->
+<!--      flex-shrink: 0;-->
+<!--    }-->
+<!--    .trail-info {-->
+<!--      padding: 1rem; flex: 1; display: flex; flex-direction: column;-->
+<!--      justify-content: space-between;-->
+<!--    }-->
+<!--    .trail-info h3 {-->
+<!--      margin: 0 0 .5rem; font-size: 1.1rem; color: #2e5939;-->
+<!--    }-->
+<!--    .trail-info p {-->
+<!--      margin: 0 0 .75rem; color: #555; flex: 1;-->
+<!--    }-->
+<!--    .btn-view {-->
+<!--      align-self: flex-start;-->
+<!--      background: #2e5939; color: #fff; border: none;-->
+<!--      padding: .4rem .8rem; border-radius: 4px; cursor: pointer;-->
+<!--      transition: background .2s;-->
+<!--    }-->
+<!--    .btn-view:hover { background: #25442b; }-->
+<!--  </style>-->
+<!--</head>-->
+<!--<body ng-controller="FavouritesCtrl as vm">-->
+<!--<div class="layout">-->
+<!--  &lt;!&ndash; Sidebar &ndash;&gt;-->
+<!--  <nav class="sidebar">-->
+<!--    <div class="logo">-->
+<!--      <img src="assets/logo.png" alt="Trekker logo" />-->
+<!--    </div>-->
+<!--    <ul class="nav-list">-->
+<!--      <li ng-class="{active: vm.isActive('/')}"><a href="#!/">Sākums</a></li>-->
+<!--      <li ng-class="{active: vm.isActive('/search')}"><a href="#!/search">Meklē taku</a></li>-->
+<!--      <li ng-class="{active: vm.isActive('/session')}"><a href="#!/session">Savienojies</a></li>-->
+<!--      <li ng-class="{active: vm.isActive('/friends')}"><a href="#!/friends">Draugi</a></li>-->
+<!--      <li ng-class="{active: vm.isActive('/favorites')}"><a href="#!/favorites">Mīļākās takas</a></li>-->
+<!--    </ul>-->
+<!--  </nav>-->
+
+<!--  &lt;!&ndash; Main content &ndash;&gt;-->
+<!--  <main class="content">-->
+<!--    <header class="header">-->
+<!--      <h1>Trekker</h1>-->
+<!--      <button class="btn-logout" ng-click="vm.logout()">Atslēgties</button>-->
+<!--    </header>-->
+
+<!--    <div class="trail-list">-->
+<!--      <div class="trail-item" ng-repeat="trail in vm.favTrails">-->
+<!--        <img ng-src="{{trail.image}}" alt="{{trail.name}}" class="trail-thumb" />-->
+<!--        <div class="trail-info">-->
+<!--          <h3>{{trail.name}}</h3>-->
+<!--          <p>{{trail.desc}}</p>-->
+<!--          <button class="btn-view" ng-click="vm.view(trail)">-->
+<!--            Apskatīt-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </main>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--  angular.module('trekkerApp', [])-->
+<!--    .controller('FavouritesCtrl', function($window, $location) {-->
+<!--      var vm = this;-->
+
+<!--      // Sample data; replace with real API call-->
+<!--      vm.favTrails = [-->
+<!--        {-->
+<!--          name: 'Dabas taka Nr.1',-->
+<!--          desc: 'Pieejamais dabas takas apraksts.',-->
+<!--          image: 'https://via.placeholder.com/120x80'-->
+<!--        },-->
+<!--        {-->
+<!--          name: 'Dabas taka Nr.2',-->
+<!--          desc: 'Pieejamais dabas takas apraksts.',-->
+<!--          image: 'https://via.placeholder.com/120x80'-->
+<!--        },-->
+<!--        {-->
+<!--          name: 'Dabas taka Nr.3',-->
+<!--          desc: 'Pieejamais dabas takas apraksts.',-->
+<!--          image: 'https://via.placeholder.com/120x80'-->
+<!--        }-->
+<!--      ];-->
+
+<!--      vm.view = function(trail) {-->
+<!--        $window.alert('Skatīt: ' + trail.name);-->
+<!--        // TODO: navigate to detail view, e.g. $location.path('/trail/' + trail.id)-->
+<!--      };-->
+
+<!--      vm.logout = function() {-->
+<!--        $window.alert('Atslēdzies');-->
+<!--        // TODO: perform logout-->
+<!--      };-->
+
+<!--      vm.isActive = function(path) {-->
+<!--        return $location.path() === path;-->
+<!--      };-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

@@ -1,0 +1,83 @@
+.friends-page {
+  padding: 1.5rem;
+  background: #d6c38f;
+  min-height: 100vh;
+  box-sizing: border-box;
+
+  .friends-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h1 {
+      margin: 0;
+      color: #2e5939;
+      font-size: 1.75rem;
+    }
+
+    .btn-add {
+      background: #2e5939;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: darken(#2e5939, 10%);
+      }
+    }
+  }
+
+  .friends-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .friend-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .thumb {
+      width: 100%;
+      padding-top: 75%; /* 4:3 aspect ratio */
+      background: #eee;
+      position: relative;
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .info {
+      margin-top: 0.75rem;
+      .name {
+        margin: 0;
+        color: #2e5939;
+        font-weight: 500;
+        text-align: center;
+      }
+    }
+  }
+}

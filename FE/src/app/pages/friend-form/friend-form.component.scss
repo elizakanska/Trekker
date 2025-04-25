@@ -1,0 +1,91 @@
+/* src/app/pages/friends/friend-form.component.scss */
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: #d6c38f;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #2e5939;
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
+    color: #555;
+    font-weight: 500;
+  }
+
+  input,
+  textarea {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
+
+  .btn-cancel,
+  .btn-submit {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .btn-cancel {
+    background: transparent;
+    color: #555;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  .btn-submit {
+    background: #4a90e2;
+    color: #fff;
+    transition: background 0.2s;
+
+    &:disabled {
+      background: #7aabd4;
+      cursor: not-allowed;
+    }
+    &:hover:not(:disabled) {
+      background: #3a78c1;
+    }
+  }
+}
