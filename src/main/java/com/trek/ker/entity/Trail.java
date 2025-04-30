@@ -1,15 +1,18 @@
 package com.trek.ker.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@Table(name = "trails", schema = "trekker")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Trail {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

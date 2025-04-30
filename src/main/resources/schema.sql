@@ -27,7 +27,17 @@ CREATE TABLE friends (
 CREATE TABLE favorites (
     user_id INT NOT NULL,
     trail_id INT NOT NULL,
+    rating INT NOT NULL,
     PRIMARY KEY (user_id, trail_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (trail_id) REFERENCES trails(trail_id) ON DELETE CASCADE
+);
+-- Table for keeping sessions
+CREATE TABLE sessions (
+    user1_id INT NOT NULL,
+    user2_id INT NOT NULL,
+    inviteCode INT NOT NULL,
+    PRIMARY KEY (user1_id, user2_id),
+    FOREIGN KEY (user1_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (user2_id) REFERENCES users (user_id) ON DELETE CASCADE
 );

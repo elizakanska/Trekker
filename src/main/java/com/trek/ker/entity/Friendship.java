@@ -7,16 +7,19 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "users", schema = "trekker")
+@Table(name = "friends", schema = "trekker")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
+public class Friendship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-    private String password;
-    private String email;
+    @ManyToOne
+    @JoinColumn(name = "user1_id")
+    private User user1;
+
+    @ManyToOne
+    @JoinColumn(name = "friend_id")
+    private User user2;
 }

@@ -1,4 +1,4 @@
-package com.trek.ker.dto;
+package com.trek.ker.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +12,4 @@ public class UserDto {
     private String username;
     private String password;
     private String email;
-    private String friends;
-    private String favorites;
 }

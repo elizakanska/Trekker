@@ -1,17 +1,16 @@
-package com.trek.ker.entity;
+package com.trek.ker.entity.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-//Friendship connection
-public class Connection {
-    @Id
+public class SessionDto {
     private Long id;
+
+    private Long inviteCode;
 
     private Long user1Id;
     private Long user2Id;

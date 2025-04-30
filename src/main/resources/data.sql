@@ -125,7 +125,11 @@ INSERT INTO friends (user1_id, friend_id) VALUES
 (1, 2),
 (1, 5);
 
-INSERT INTO favorites (user_id, trail_id) VALUES
-(1, 101),
-(1, 102),
-(2, 103);
+INSERT INTO favorites (user_id, trail_id, rating) VALUES
+(1, 101, 8),
+(1, 102, 9),
+(2, 103, 10);
+
+INSERT INTO sessions (user1_id, user2_id, invitecode) VALUES
+(1, 2, 54321),
+(3, 5, 67891);
