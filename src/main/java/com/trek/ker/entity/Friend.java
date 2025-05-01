@@ -1,16 +1,16 @@
 package com.trek.ker.entity;
 
-import com.trek.ker.entity.id.SessionId;
+import com.trek.ker.entity.id.FriendId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "sessions")
-@IdClass(SessionId.class)
+@Table(name = "friends")
+@IdClass(FriendId.class)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Session {
+public class Friend {
     @Id
     @ManyToOne
     @JoinColumn(name = "user1_id")
@@ -18,9 +18,7 @@ public class Session {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "user2_id")
-    private User user2;
-
-    private Long inviteCode;
+    @JoinColumn(name = "friend_id")
+    private User friend;
 }
 

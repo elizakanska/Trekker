@@ -1,16 +1,13 @@
-package com.trek.ker.entity;
+package com.trek.ker.entity.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrailRating {
-
-    @Id
+public class FavoriteDto {
     private Long id;
 
     private Long userId;

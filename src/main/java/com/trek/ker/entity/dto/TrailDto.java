@@ -1,4 +1,4 @@
-package com.trek.ker.dto;
+package com.trek.ker.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
