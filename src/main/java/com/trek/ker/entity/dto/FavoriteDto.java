@@ -12,5 +12,4 @@ public class FavoriteDto {
 
     private Long userId;
     private Long trailId;
-    private Long rating;
 }

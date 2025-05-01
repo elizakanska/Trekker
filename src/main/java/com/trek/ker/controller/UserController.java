@@ -3,7 +3,6 @@ package com.trek.ker.controller;
 import com.trek.ker.entity.dto.UserDto;
 import com.trek.ker.mapper.UserMapper;
 import com.trek.ker.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,9 +10,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    @Autowired
-    private UserService service;
-    @Autowired private UserMapper mapper;
+    private final UserService service;
+    private final UserMapper mapper;
+
+    public UserController(UserService service, UserMapper mapper) {
+        this.service = service;
+        this.mapper = mapper;
+    }
 
     @GetMapping
     public List<UserDto> getAll() {

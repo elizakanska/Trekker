@@ -3,8 +3,10 @@ package com.trek.ker.entity;
 import com.trek.ker.entity.id.SessionId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @Entity
 @Table(name = "sessions")
 @IdClass(SessionId.class)

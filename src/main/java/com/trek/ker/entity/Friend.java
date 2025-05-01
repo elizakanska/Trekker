@@ -3,8 +3,10 @@ package com.trek.ker.entity;
 import com.trek.ker.entity.id.FriendId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @Entity
 @Table(name = "friends")
 @IdClass(FriendId.class)
@@ -20,5 +22,6 @@ public class Friend {
     @ManyToOne
     @JoinColumn(name = "friend_id")
     private User friend;
+
 }
 

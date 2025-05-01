@@ -4,7 +4,6 @@ import com.trek.ker.entity.dto.SessionDto;
 import com.trek.ker.entity.id.SessionId;
 import com.trek.ker.mapper.SessionMapper;
 import com.trek.ker.service.SessionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,8 +11,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/sessions")
 public class SessionController {
-    @Autowired private SessionService service;
-    @Autowired private SessionMapper mapper;
+    private final SessionService service;
+    private final SessionMapper mapper;
+
+    public SessionController(SessionService service, SessionMapper mapper) {
+        this.service = service;
+        this.mapper = mapper;
+    }
 
     @GetMapping
     public List<SessionDto> getAll() {

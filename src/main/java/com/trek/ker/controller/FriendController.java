@@ -1,10 +1,11 @@
 package com.trek.ker.controller;
 
+import com.trek.ker.entity.Friend;
 import com.trek.ker.entity.dto.FriendDto;
 import com.trek.ker.entity.id.FriendId;
 import com.trek.ker.mapper.FriendMapper;
 import com.trek.ker.service.FriendService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,17 +13,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/friends")
 public class FriendController {
-    @Autowired private FriendService service;
-    @Autowired private FriendMapper mapper;
+    private final FriendService service;
+    private final FriendMapper mapper;
 
-    @GetMapping
-    public List<FriendDto> getAll() {
-        return service.getAllFriends().stream().map(mapper::toDto).toList();
+    public FriendController(FriendService service, FriendMapper mapper) {
+        this.service = service;
+        this.mapper = mapper;
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<FriendDto> getAll(@PathVariable Long userId) {
+        return service.getFriendshipsForUser(userId).stream()
+                .map(mapper::toDto)
+                .toList();
     }
 
     @PostMapping
-    public FriendDto add(@RequestBody FriendDto dto) {
-        return mapper.toDto(service.addFriend(mapper.toEntity(dto)));
+    public ResponseEntity<FriendDto> add(@RequestBody FriendDto dto) {
+        Friend friend = mapper.toEntity(dto);
+        boolean added = service.addFriendship(friend);
+        if (added) {
+            return ResponseEntity.ok(mapper.toDto(friend));
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping
@@ -30,3 +44,4 @@ public class FriendController {
         service.removeFriend(new FriendId(dto.getUser1Id(), dto.getFriendId()));
     }
 }
+
