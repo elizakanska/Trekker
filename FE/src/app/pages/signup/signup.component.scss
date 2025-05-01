@@ -3,6 +3,13 @@
 body {
   /* you can keep this in global styles.scss instead */
 }
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #d6c38f;  /* same beige you’re using elsewhere */
+}
 
 .signup-container {
   text-align: center;

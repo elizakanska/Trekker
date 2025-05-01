@@ -5,17 +5,19 @@
     <h2>Izveido kontu</h2>
     <p class="subtitle">ievadi savu e-pastu, lai uzsāktu pieteikšanos</p>
 
-    <form name="signupForm" class="signup-form" ng-submit="vm.submit()" novalidate>
+    <!-- signup.component.html -->
+    <form [formGroup]="form" (ngSubmit)="submit()" class="signup-form">
       <input
         type="email"
         formControlName="email"
         placeholder="email@domain.com"
-        required
       />
-      <button type="submit" class="btn btn-submit" [disabled]="form.invalid">
+
+      <button type="submit" class="btn btn-submit">
         Pieteikties ar e-pastu
       </button>
     </form>
+
 
     <div class="divider">vai turpināt ar</div>
 

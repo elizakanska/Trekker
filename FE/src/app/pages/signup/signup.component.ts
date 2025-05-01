@@ -1,29 +1,36 @@
-// src/app/pages/signup/signup.component.ts
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component }            from '@angular/core';
+import { CommonModule }         from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { Router }               from '@angular/router';
 
 @Component({
   selector: 'app-signup',
+  standalone: true,                // <-- mark as standalone
+  imports: [
+    CommonModule,                  // <-- ngIf, ngFor, etc.
+    ReactiveFormsModule            // <-- formGroup, formControlName, etc.
+  ],
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  styleUrls:   ['./signup.component.scss']
 })
 export class SignupComponent {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router
+  ) {
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['']   // no validators needed if you always allow
     });
   }
 
   submit() {
-    if (this.form.invalid) return;
-    console.log('Signing up with', this.form.value.email);
-    // TODO: call backend signup endpoint
+    // unconditionally navigate
+    this.router.navigate(['/welcome']);
   }
 
   continueWithGoogle() {
-    console.log('Google OAuth flow');
-    // TODO: trigger OAuth
+    this.router.navigate(['/welcome']);
   }
 }

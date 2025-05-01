@@ -32,7 +32,7 @@ export class WelcomeComponent {
     {
       title:    'Savienojies',
       subtitle: 'Izveidojiet savienojumu pirms sākt!',
-      route:    '/session',
+      route:    '/friend-form',
       css:      'card-accent'
     },
     {

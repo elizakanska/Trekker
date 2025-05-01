@@ -1,133 +1,133 @@
-// app.component.scss
-
-$app-bg:       #d6c38f;
-$sidebar-bg:   #c5b26f;
-$primary-color: #2e5939;
-
-.app-layout {
-  height: 100vh;
-  background: $app-bg; // ensure full‐screen gold
-}
-
-.menu-sidebar {
-  background: $sidebar-bg !important;
-  border-right: none !important;
-
-  .sidebar-logo {
-    padding: 1rem 0;
-    img { max-width: 80px; }
-  }
-
-  .sidebar-menu {
-    background: transparent !important;
-    box-shadow: none !important;
-
-    ::ng-deep .ant-menu-item {
-      font-family: "Inter", sans-serif; // switch to Inter or your chosen font
-      font-size: 0.95rem;                // adjust size
-      padding: 0.6rem 1rem !important;   // more vertical breathing room
-
-      span {
-        margin-left: 0.5rem;            // space between icon & text
-      }
-      &.ant-menu-item-selected,
-      &:hover {
-        background: rgba($primary-color, 0.15) !important;
-      }
-    }
-
-  }
-}
-
-nz-layout,
-nz-header,
-nz-content,
-nz-footer {
-  background: transparent; // drop white default panels
-}
-
-.app-header {
-  height: 64px;
-  padding: 0 1rem;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-
-  .header-left {
-    display: flex;
-    align-items: center;
-
-    .trigger {
-      width: 32px;
-      height: 32px;
-      font-size: 1.5rem;
-      color: $primary-color;
-      cursor: pointer;
-      padding: 0;
-      margin-right: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba($primary-color, 0.3);
-      border-radius: 4px;
-      background: #fff;       // or transparent
-      box-shadow: none;
-
-      nz-icon {
-        font-size: 1.25rem;
-        color: $primary-color;
-      }
-
-      &:hover {
-        background: rgba($primary-color, 0.05);
-      }
-    }
-  }
-  .app-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    color: $primary-color;
-    font-size: 1.75rem;
-    font-weight: 600;
-  }
-
-  .header-right {
-    position: relative;
-    button {
-      background: $primary-color;
-      color: #fff;
-      border: none;
-      padding: 0.25rem 0.75rem;
-      border-radius: 4px;
-      font-weight: 500;
-      transition: background 0.2s, transform 0.1s;
-      font-size: 0.875rem;margin-right: 0.5rem;     // push in from the right edge
-      margin-top: 0;            // ensure it's vertically aligned
-      line-height: 1.2;
-
-      &:hover {
-        background: darken($primary-color, 10%);
-      }
-      &:active {
-        transform: scale(0.97);
-      }
-    }
-  }
-}
-
-.app-content {
-  background: transparent;
-  padding: 1rem;
-}
-
-.app-footer {
-  text-align: center;
-  color: rgba($primary-color, 0.7);
-  background: transparent;
-  padding: 0.5rem;
-}
+//// app.component.scss
+//
+//$app-bg:       #d6c38f;
+//$sidebar-bg:   #c5b26f;
+//$primary-color: #2e5939;
+//
+//.app-layout {
+//  height: 100vh;
+//  background: $app-bg; // ensure full‐screen gold
+//}
+//
+//.menu-sidebar {
+//  background: $sidebar-bg !important;
+//  border-right: none !important;
+//
+//  .sidebar-logo {
+//    padding: 1rem 0;
+//    img { max-width: 80px; }
+//  }
+//
+//  .sidebar-menu {
+//    background: transparent !important;
+//    box-shadow: none !important;
+//
+//    ::ng-deep .ant-menu-item {
+//      font-family: "Inter", sans-serif; // switch to Inter or your chosen font
+//      font-size: 0.95rem;                // adjust size
+//      padding: 0.6rem 1rem !important;   // more vertical breathing room
+//
+//      span {
+//        margin-left: 0.5rem;            // space between icon & text
+//      }
+//      &.ant-menu-item-selected,
+//      &:hover {
+//        background: rgba($primary-color, 0.15) !important;
+//      }
+//    }
+//
+//  }
+//}
+//
+//nz-layout,
+//nz-header,
+//nz-content,
+//nz-footer {
+//  background: transparent; // drop white default panels
+//}
+//
+//.app-header {
+//  height: 64px;
+//  padding: 0 1rem;
+//  background: transparent;
+//  display: flex;
+//  align-items: center;
+//  justify-content: space-between;
+//  position: relative;
+//
+//  .header-left {
+//    display: flex;
+//    align-items: center;
+//
+//    .trigger {
+//      width: 32px;
+//      height: 32px;
+//      font-size: 1.5rem;
+//      color: $primary-color;
+//      cursor: pointer;
+//      padding: 0;
+//      margin-right: 0.75rem;
+//      display: flex;
+//      align-items: center;
+//      justify-content: center;
+//      border: 1px solid rgba($primary-color, 0.3);
+//      border-radius: 4px;
+//      background: #fff;       // or transparent
+//      box-shadow: none;
+//
+//      nz-icon {
+//        font-size: 1.25rem;
+//        color: $primary-color;
+//      }
+//
+//      &:hover {
+//        background: rgba($primary-color, 0.05);
+//      }
+//    }
+//  }
+//  .app-title {
+//    position: absolute;
+//    left: 50%;
+//    top: 50%;
+//    transform: translate(-50%, -50%);
+//    margin: 0;
+//    color: $primary-color;
+//    font-size: 1.75rem;
+//    font-weight: 600;
+//  }
+//
+//  .header-right {
+//    position: relative;
+//    button {
+//      background: $primary-color;
+//      color: #fff;
+//      border: none;
+//      padding: 0.25rem 0.75rem;
+//      border-radius: 4px;
+//      font-weight: 500;
+//      transition: background 0.2s, transform 0.1s;
+//      font-size: 0.875rem;margin-right: 0.5rem;     // push in from the right edge
+//      margin-top: 0;            // ensure it's vertically aligned
+//      line-height: 1.2;
+//
+//      &:hover {
+//        background: darken($primary-color, 10%);
+//      }
+//      &:active {
+//        transform: scale(0.97);
+//      }
+//    }
+//  }
+//}
+//
+//.app-content {
+//  background: transparent;
+//  padding: 1rem;
+//}
+//
+//.app-footer {
+//  text-align: center;
+//  color: rgba($primary-color, 0.7);
+//  background: transparent;
+//  padding: 0.5rem;
+//}

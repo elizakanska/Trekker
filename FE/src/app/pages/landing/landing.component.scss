@@ -1,0 +1,145 @@
+/* src/app/pages/landing/landing.component.scss */
+
+$bg-page: #d6c38f;
+$accent:  #2e5939;
+$shadow:  rgba(0, 0, 0, 0.1);
+
+.landing-page {
+  background: $bg-page;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    .nav-home {
+      margin-right: 1rem;
+      color: $accent;
+      font-size: 0.9rem;
+    }
+    .logo {
+      height: 40px;
+    }
+  }
+
+  .btn-login {
+    background: $accent;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+    &:hover { background: darken($accent, 10%); }
+  }
+}
+
+.landing-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+
+  .title {
+    font-size: 4rem;
+    color: $accent;
+    margin-bottom: 2rem;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    max-width: 960px;
+
+    .card {
+      background: #4a90e2;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px $shadow;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+
+      h2 {
+        margin: 0 0 1rem;
+        color: white;
+        font-size: 1.25rem;
+      }
+      p {
+        margin: 0;
+        color: #555;
+        flex: 1;
+      }
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px $shadow;
+      }
+    }
+
+    /* video placeholder variant */
+    .card-video {
+      @extend .card;
+      .video-placeholder {
+        margin-top: 1rem;
+        width: 100%;
+        height: 180px;
+        background: $accent;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+      }
+    }
+
+    /* light-blue cards (info + howto) */
+    .card-info,
+    .card-howto {
+      @extend .card;
+      background: #7fb2d1;  // light blue
+      color: white;         // white text
+
+      /* override header & text */
+      h2, p { color: white; }
+    }
+
+    /* green “about” card */
+    .card-about {
+      @extend .card;
+      background: #5cb85c;  // green
+      color: white;
+
+      h2, p { color: white; }
+    }
+  }
+
+  .btn-join {
+    display: block;
+    margin: 2rem auto 0;
+    background: $accent;
+    color: white;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    &:hover {
+      background: darken($accent, 10%);
+    }
+  }
+}

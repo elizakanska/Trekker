@@ -1,70 +1,72 @@
-<nz-layout class="app-layout">
-  <!-- SIDEBAR -->
-  <nz-sider
-    nzCollapsible
-    nzWidth="200px"
-    nzBreakpoint="md"
-    [(nzCollapsed)]="isCollapsed"
-    [nzTrigger]="null"
-    nzTheme="light"
-    class="menu-sidebar"
-  >
-    <div class="sidebar-logo">
-      <img src="assets/logo.png" alt="Trekker logo" />
-    </div>
+<router-outlet></router-outlet>
 
-    <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="sidebar-menu">
-      <li nz-menu-item nzMatchRouter routerLink="/welcome">
-        <span nz-icon nzType="home"></span>
-        <span>Sākums</span>
-      </li>
-      <li nz-menu-item nzMatchRouter routerLink="/session">
-        <span nz-icon nzType="search"></span>
-        <span>Meklē taku</span>
-      </li>
-      <li nz-menu-item nzMatchRouter routerLink="/friend-form">
-        <span nz-icon nzType="wifi"></span>
-        <span>Savienojies</span>
-      </li>
-      <li nz-menu-item nzMatchRouter routerLink="/friends">
-        <span nz-icon nzType="team"></span>
-        <span>Draugi</span>
-      </li>
-      <li nz-menu-item nzMatchRouter routerLink="/favourites">
-        <span nz-icon nzType="unordered-list"></span>
-        <span>Mīļākās takas</span>
-      </li>
-    </ul>
-  </nz-sider>
+<!--<nz-layout class="app-layout">-->
+<!--  &lt;!&ndash; SIDEBAR &ndash;&gt;-->
+<!--  <nz-sider-->
+<!--    nzCollapsible-->
+<!--    nzWidth="200px"-->
+<!--    nzBreakpoint="md"-->
+<!--    [(nzCollapsed)]="isCollapsed"-->
+<!--    [nzTrigger]="null"-->
+<!--    nzTheme="light"-->
+<!--    class="menu-sidebar"-->
+<!--  >-->
+<!--    <div class="sidebar-logo">-->
+<!--      <img src="assets/logo.png" alt="Trekker logo" />-->
+<!--    </div>-->
 
-  <!-- MAIN LAYOUT -->
-  <nz-layout>
-    <!-- HEADER -->
-    <nz-header class="app-header">
-      <div class="header-left">
-        <button nz-button nzType="text" class="trigger" (click)="isCollapsed = !isCollapsed">
-          <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
-        </button>
-        <h1 class="app-title">Trekker</h1>
-      </div>
-      <div class="header-right">
-        <button nz-button nzType="primary" >Atslēgties</button> <!--(click)="logout()"-->
-      </div>
-    </nz-header>
+<!--    <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="sidebar-menu">-->
+<!--      <li nz-menu-item nzMatchRouter routerLink="/welcome">-->
+<!--        <span nz-icon nzType="home"></span>-->
+<!--        <span>Sākums</span>-->
+<!--      </li>-->
+<!--      <li nz-menu-item nzMatchRouter routerLink="/session">-->
+<!--        <span nz-icon nzType="search"></span>-->
+<!--        <span>Meklē taku</span>-->
+<!--      </li>-->
+<!--      <li nz-menu-item nzMatchRouter routerLink="/friend-form">-->
+<!--        <span nz-icon nzType="wifi"></span>-->
+<!--        <span>Savienojies</span>-->
+<!--      </li>-->
+<!--      <li nz-menu-item nzMatchRouter routerLink="/friends">-->
+<!--        <span nz-icon nzType="team"></span>-->
+<!--        <span>Draugi</span>-->
+<!--      </li>-->
+<!--      <li nz-menu-item nzMatchRouter routerLink="/favourites">-->
+<!--        <span nz-icon nzType="unordered-list"></span>-->
+<!--        <span>Mīļākās takas</span>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </nz-sider>-->
 
-    <!-- CONTENT -->
-    <nz-content class="app-content">
-      <div class="inner-content">
-        <router-outlet></router-outlet>
-      </div>
-    </nz-content>
+<!--  &lt;!&ndash; MAIN LAYOUT &ndash;&gt;-->
+<!--  <nz-layout>-->
+<!--    &lt;!&ndash; HEADER &ndash;&gt;-->
+<!--    <nz-header class="app-header">-->
+<!--      <div class="header-left">-->
+<!--        <button nz-button nzType="text" class="trigger" (click)="isCollapsed = !isCollapsed">-->
+<!--          <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>-->
+<!--        </button>-->
+<!--        <h1 class="app-title">Trekker</h1>-->
+<!--      </div>-->
+<!--      <div class="header-right">-->
+<!--        <button nz-button nzType="primary" >Atslēgties</button> &lt;!&ndash;(click)="logout()"&ndash;&gt;-->
+<!--      </div>-->
+<!--    </nz-header>-->
 
-    <!-- FOOTER -->
-    <nz-footer class="app-footer">
-      © 2025 – Evelīna Geikina, Elīza Kanska, Vineta Bitte
-    </nz-footer>
-  </nz-layout>
-</nz-layout>
+<!--    &lt;!&ndash; CONTENT &ndash;&gt;-->
+<!--    <nz-content class="app-content">-->
+<!--      <div class="inner-content">-->
+<!--        <router-outlet></router-outlet>-->
+<!--      </div>-->
+<!--    </nz-content>-->
+
+<!--    &lt;!&ndash; FOOTER &ndash;&gt;-->
+<!--    <nz-footer class="app-footer">-->
+<!--      © 2025 – Evelīna Geikina, Elīza Kanska, Vineta Bitte-->
+<!--    </nz-footer>-->
+<!--  </nz-layout>-->
+<!--</nz-layout>-->
 
 
 
