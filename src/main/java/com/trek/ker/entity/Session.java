@@ -1,27 +1,26 @@
 package com.trek.ker.entity;
 
+import com.trek.ker.entity.id.SessionId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@Table(name = "sessions", schema = "trekker")
-@NoArgsConstructor
+@Table(name = "sessions")
+@IdClass(SessionId.class)
 @AllArgsConstructor
+@NoArgsConstructor
 public class Session {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Long inviteCode;
-
     @ManyToOne
     @JoinColumn(name = "user1_id")
     private User user1;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "user2_id")
     private User user2;
+
+    private Long inviteCode;
 }
+

@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FriendshipDto {
+public class FriendDto {
     private Long id;
 
     private Long user1Id;
-    private Long user2Id;
+    private Long friendId;
 }

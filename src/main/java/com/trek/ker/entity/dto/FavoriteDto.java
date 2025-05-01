@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrailRatingDto {
+public class FavoriteDto {
     private Long id;
 
     private Long userId;

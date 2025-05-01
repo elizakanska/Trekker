@@ -1,27 +1,26 @@
 package com.trek.ker.entity;
 
+import com.trek.ker.entity.id.FavoriteId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@Table(name = "favorites", schema = "trekker")
-@NoArgsConstructor
+@Table(name = "favorites")
+@IdClass(FavoriteId.class)
 @AllArgsConstructor
-public class TrailRating {
+@NoArgsConstructor
+public class Favorite {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "trail_id")
     private Trail trail;
 
     private int rating;
 }
+
