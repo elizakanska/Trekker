@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/trails")
+@RequestMapping("/api/trails")
 public class TrailController {
     private final TrailService service;
     private final TrailMapper mapper;

@@ -114,12 +114,13 @@ INSERT INTO trails (trail_id, name, location, type, biome, difficulty, length) V
 (113, 'Ungurmuižas dižkoku taka', 'Pārgaujas novads, Raiskuma pagasts, Unguri', 'Gājeju taka', 'Tīrums', 'Viegli', 1.3),
 (114, 'Pūrciema Baltās kāpas taka', 'Ģipka, Rojas pagasts, Talsu novads, LV-3264', 'Gājeju taka', 'Kāpa', 'Normāli', 0.9);
 
-INSERT INTO users (user_id, username, password, email) VALUES
-(1, 'janisparaugs', 'qwerty', 'janis.paraugs@example.com'),
-(2, 'AnnaLiepa', 'parole123', 'anna.liepa@example.com'),
-(3, 'Māris', 'asdfgh', 'maris@example.com'),
-(4, 'Ilze', 'zxcvbn', 'ilze@example.com'),
-(5, 'Andris', '1234p', 'andris@example.com');
+INSERT INTO users (user_id, username, password, email, role) VALUES
+(1, 'janisparaugs', 'qwerty', 'janis.paraugs@example.com', 'USER'),
+(2, 'AnnaLiepa', 'parole123', 'anna.liepa@example.com', 'USER'),
+(3, 'Māris', 'asdfgh', 'maris@example.com', 'USER'),
+(4, 'Ilze', 'zxcvbn', 'ilze@example.com', 'USER'),
+(5, 'Andris', '1234p', 'andris@example.com', 'USER'),
+(6, 'admin', 'admin', 'admin@example.com', 'ADMIN');
 
 INSERT INTO friends (user1_id, friend_id) VALUES
 (1, 2),
