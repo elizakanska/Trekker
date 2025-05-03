@@ -14,7 +14,8 @@
     type VARCHAR(30) NULL,
     biome VARCHAR(30) NULL,
     difficulty VARCHAR(20) NULL,
-    length DECIMAL(5,2) NULL
+    length DECIMAL(5,2) NULL,
+    image VARCHAR(100) NULL
 );
 -- Table for multiple friends
 CREATE TABLE friends (

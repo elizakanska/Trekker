@@ -6,4 +6,5 @@ export interface Trail {
   biome: string;
   difficulty: string;
   length: number;
+  image: string;
 }

@@ -22,4 +22,6 @@ public class Trail {
     private String difficulty;
 
     private Float length;
+
+    private String image;
 }

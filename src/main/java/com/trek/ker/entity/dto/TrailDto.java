@@ -17,4 +17,6 @@ public class TrailDto {
     private String difficulty;
 
     private Float length;
+
+    private String image;
 }
