@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .trail-list {
   display: flex;
   flex-direction: column;
@@ -52,7 +54,7 @@
     transition: background 0.2s;
 
     &:hover {
-      background: darken(#2e5939, 10%);
+      background: color.adjust(#2e5939, $lightness: -10%);
     }
   }
 }
