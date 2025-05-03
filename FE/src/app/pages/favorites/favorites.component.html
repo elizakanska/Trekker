@@ -1,0 +1,19 @@
+<div class="trail-list">
+  @for (trail of trails; track trail) {
+    <div class="trail-item">
+      <img
+        class="trail-thumb"
+        [src]="trail.image"
+        alt="{{ trail.name }}"
+      />
+
+      <div class="trail-info">
+        <h3>{{ trail.name }}</h3>
+        <p>{{ trail.desc }}</p>
+        <button class="btn-view">
+          Apskatīt
+        </button>
+      </div>
+    </div>
+  }
+</div>

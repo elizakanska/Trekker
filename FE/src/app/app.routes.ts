@@ -4,10 +4,9 @@ import { SignupComponent }  from './pages/signup/signup.component';
 import { ShellComponent }    from './shell.component';
 import {WelcomeComponent} from './pages/welcome/welcome.component';
 import {FriendsComponent} from './pages/friends/friends.component';
-import {FavouritesComponent} from './pages/favourites/favourites.component';
+import {FavoritesComponent} from './pages/favorites/favorites.component';
 import {ChooseTrailComponent} from './pages/choose-trail/choose-trail.component';
 import {FriendFormComponent} from './pages/friend-form/friend-form.component';
-// … other imports …
 
 export const routes: Routes = [
   { path: '', component: LandingComponent, pathMatch: 'full' },
@@ -22,7 +21,7 @@ export const routes: Routes = [
       { path: 'session',    component: ChooseTrailComponent },
       { path: 'friends',    component: FriendsComponent },
       { path: 'friend-form',component: FriendFormComponent },
-      { path: 'favourites', component: FavouritesComponent },
+      { path: 'favorites', component: FavoritesComponent },
       { path: '', redirectTo: 'welcome', pathMatch: 'full' }
     ]
   },

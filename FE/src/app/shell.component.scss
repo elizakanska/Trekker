@@ -1,4 +1,5 @@
 // app.component.scss
+@use 'sass:color';
 
 $app-bg:       #d6c38f;
 $sidebar-bg:   #c5b26f;
@@ -12,11 +13,6 @@ $primary-color: #2e5939;
 .menu-sidebar {
   background: $sidebar-bg !important;
   border-right: none !important;
-
-  .sidebar-logo {
-    padding: 1rem 0;
-    img { max-width: 80px; }
-  }
 
   .sidebar-menu {
     background: transparent !important;
@@ -32,11 +28,29 @@ $primary-color: #2e5939;
       }
       &.ant-menu-item-selected,
       &:hover {
+        color: black;
         background: rgba($primary-color, 0.15) !important;
       }
     }
 
   }
+}
+
+.sidebar-logo {
+  position: relative;
+  height: 64px;
+  width: 64px;
+  padding-left: 24px;
+  overflow: hidden;
+  line-height: 64px;
+  transition: all .3s;
+}
+
+.sidebar-logo img {
+  display: inline-block;
+  height: 60px;
+  width: 60px;
+  vertical-align: middle;
 }
 
 nz-layout,
@@ -111,7 +125,7 @@ nz-footer {
       line-height: 1.2;
 
       &:hover {
-        background: darken($primary-color, 10%);
+        background: color.adjust($primary-color, $lightness: -10%);
       }
       &:active {
         transform: scale(0.97);

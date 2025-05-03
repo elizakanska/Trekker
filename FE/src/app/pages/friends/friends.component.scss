@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .friends-page {
   padding: 2rem;
 
@@ -11,7 +13,7 @@
     cursor: pointer;
     margin-bottom: 1.5rem;
     transition: background 0.2s, transform 0.1s;
-    &:hover { background: darken(#2e5939, 10%); }
+    &:hover { background: color.adjust(#2e5939, $lightness: -10%); }
     &:active { transform: scale(0.97); }
   }
 

@@ -3,6 +3,8 @@ import {Router, RouterModule} from '@angular/router';
 import { NzLayoutModule }   from 'ng-zorro-antd/layout';
 import { NzMenuModule }     from 'ng-zorro-antd/menu';
 import { NzIconModule }     from 'ng-zorro-antd/icon';
+import {NgOptimizedImage} from '@angular/common';
+import {NzButtonComponent} from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'app-shell',
@@ -11,7 +13,9 @@ import { NzIconModule }     from 'ng-zorro-antd/icon';
     RouterModule,
     NzLayoutModule,
     NzMenuModule,
-    NzIconModule
+    NzIconModule,
+    NgOptimizedImage,
+    NzButtonComponent
   ],
   templateUrl: './shell.component.html',
   styleUrls:   ['./shell.component.scss']

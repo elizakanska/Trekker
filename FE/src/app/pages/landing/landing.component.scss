@@ -1,5 +1,7 @@
 /* src/app/pages/landing/landing.component.scss */
 
+@use "sass:color";
+
 $bg-page: #d6c38f;
 $accent:  #2e5939;
 $shadow:  rgba(0, 0, 0, 0.1);
@@ -39,7 +41,7 @@ $shadow:  rgba(0, 0, 0, 0.1);
     cursor: pointer;
     font-size: 0.9rem;
     transition: background 0.2s;
-    &:hover { background: darken($accent, 10%); }
+    &:hover { background: color.adjust($accent, $lightness: -10%); }
   }
 }
 
@@ -139,7 +141,7 @@ $shadow:  rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: background 0.2s;
     &:hover {
-      background: darken($accent, 10%);
+      background: color.adjust($accent, $lightness: -10%);
     }
   }
 }
