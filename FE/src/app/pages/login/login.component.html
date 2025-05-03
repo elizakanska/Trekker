@@ -1,0 +1,21 @@
+<div class="login-page">
+  <h1>Trekker</h1>
+  <div class="card">
+    <h2>Pieslēgties</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label>
+        E-pasts
+        <input formControlName="email" type="email" placeholder="jūsu@epasts.lv" />
+      </label>
+      <label>
+        Parole
+        <input formControlName="password" type="password" placeholder="••••••••" />
+      </label>
+      <button type="submit" [disabled]="form.invalid">Pieslēgties</button>
+    </form>
+    <p class="note">
+      Ja vēl neesat reģistrējies, <a routerLink="/signup">izveido kontu</a>.
+    </p>
+  </div>
+</div>
+

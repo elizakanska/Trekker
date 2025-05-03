@@ -27,7 +27,7 @@ export class SignupComponent {
 
   submit() {
     // unconditionally navigate
-    this.router.navigate(['/welcome']);
+    this.router.navigate(['/setup']);
   }
 
   continueWithGoogle() {

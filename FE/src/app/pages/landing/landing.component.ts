@@ -14,7 +14,7 @@ export class LandingComponent {
 
   /** go to login/signup page */
   login() {
-    this.router.navigate(['/signup']);
+    this.router.navigate(['/login']);
   }
 
   /** go to signup/join page */

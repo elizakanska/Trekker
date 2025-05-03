@@ -1,0 +1,25 @@
+<div class="setup-page">
+  <h1>Trekker</h1>
+  <div class="card">
+    <h2>Iestatīt kontu</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label>
+        Lietotājvārds
+        <input formControlName="username" type="text" placeholder="Jūsu vārds" />
+      </label>
+      <label>
+        Parole
+        <input formControlName="password" type="password" placeholder="••••••••" />
+      </label>
+      <label>
+        Apstiprināt paroli
+        <input formControlName="confirm" type="password" placeholder="••••••••" />
+      </label>
+      <div *ngIf="form.hasError('mismatch')" class="error">
+        Paroles nesakrīt.
+      </div>
+      <button type="submit" [disabled]="form.invalid">Saglabāt</button>
+    </form>
+  </div>
+</div>
+
