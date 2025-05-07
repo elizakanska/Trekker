@@ -1,6 +1,7 @@
 package com.trek.ker.service;
 
 import com.trek.ker.entity.User;
+import com.trek.ker.entity.enums.Role;
 import com.trek.ker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +32,7 @@ public class UserService {
             User admin = new User();
             admin.setUsername(adminUsername);
             admin.setPassword(passwordEncoder.encode(adminPassword));
-            admin.setRole("ADMIN");
+            admin.setRole(Role.ADMIN);
             userRepo.save(admin);
         }
     }
@@ -46,7 +47,7 @@ public class UserService {
 
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("USER");
+        user.setRole(Role.USER);
         return userRepo.save(user);
     }
 
@@ -54,7 +55,7 @@ public class UserService {
         userRepo.deleteById(id);
     }
 
-    public Optional<User> findByUsername(String username) {
-        return Optional.ofNullable(userRepo.findByUsername(username));
+    public Optional<User> findByEmail(String email) {
+        return userRepo.findByEmail(email);
     }
 }

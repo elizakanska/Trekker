@@ -16,6 +16,12 @@ export class TrailService {
     return this.http.get<Trail>(`${API_URL}/trails/${id}`);
   }
 
+  getTrailsByIds(ids: number[]): Observable<Trail[]> {
+    return this.http.get<Trail[]>(`${API_URL}/trails`, {
+      params: { ids: ids.join(',') }
+    });
+  }
+
   create(trail: Trail): Observable<Trail> {
     return this.http.post<Trail>(`${API_URL}/trails`, trail);
   }

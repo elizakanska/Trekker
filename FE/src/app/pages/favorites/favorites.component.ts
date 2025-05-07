@@ -1,119 +1,151 @@
-import { Component, OnInit } from '@angular/core';
-import { FavoritesService } from '../../services/favorites.service';
+import { ChangeDetectionStrategy, Component, DestroyRef, signal } from '@angular/core';
+import { FavoriteService } from '../../services/favorite.service';
+import { TrailService } from '../../services/trail.service';
 import { Trail } from '../../models/trail.model';
+import { Favorite } from '../../models/favorite.model';
+import { BehaviorSubject, combineLatest, finalize, switchMap, map } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NzButtonModule,
+    NzIconModule,
+    NzTableModule,
+    CommonModule,
+    NzModalModule,
+    NzDescriptionsModule
+  ],
   selector: 'app-favorites',
-  templateUrl: './favorites.component.html',
-  styleUrls: ['./favorites.component.scss']
+  standalone: true,
+  styleUrls: ['./favorites.component.scss'],
+  templateUrl: './favorites.component.html'
 })
-export class FavoritesComponent implements OnInit {
-  trails: Trail[] = [];
-  userId: number = 0;
+export class FavoritesComponent {
+  favorites = signal<Favorite[]>([]);
+  trails = signal<Trail[]>([]);
+  users = signal<User[]>([]);
+  userId = signal<number | null>(null);
+  isLoading = signal<boolean>(false);
+  isSubmitting = signal<boolean>(false);
+  // Add to existing signals
+  showTrailDetails = signal<boolean>(false);
+  selectedTrail = signal<Trail | null>(null);
 
-  constructor(private favoriteService: FavoritesService) {}
+  private loadTriggerSubj = new BehaviorSubject<void>(undefined);
 
-  ngOnInit(): void {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      const user = JSON.parse(userData);
-      this.userId = user.id;
-
-      this.favoriteService.getFavorites(this.userId).subscribe({
-        next: (data: Trail[]) => {
-          this.trails = data;
-        },
-        error: (err) => {
-          console.error('Failed to load favorites', err);
-        }
-      });
-    }
+  constructor(
+    private favoriteService: FavoriteService,
+    private trailService: TrailService,
+    private userService: UserService,
+    private message: NzMessageService,
+    private destroyRef: DestroyRef
+  ) {
+    this.setupDataStreams();
+    this.loadUserData();
   }
+
+  private setupDataStreams(): void {
+    combineLatest([
+      this.loadTriggerSubj,
+      this.loadTriggerSubj.pipe(map(() => this.userId()))
+    ]).pipe(
+      switchMap(([_, userId]) => {
+        if (!userId) return [];
+        this.isLoading.set(true);
+        return this.favoriteService.getByUser(userId).pipe(
+          switchMap(favorites => {
+            this.favorites.set(favorites);
+            const trailIds = favorites.map(f => f.trailId);
+            return trailIds.length > 0
+              ? this.trailService.getTrailsByIds(trailIds)
+              : [];
+          }),
+          finalize(() => this.isLoading.set(false))
+        );
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: trails => this.trails.set(trails),
+      error: err => {
+        console.error('Failed to load data', err);
+        this.message.error('Failed to load favorites');
+      }
+    });
+
+    this.userService.getAll().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(users => this.users.set(users));
+  }
+
+  private loadUserData(): void {
+    const userData = localStorage.getItem('user');
+    if (userData) this.userId.set(JSON.parse(userData).id);
 }
 
-// import { Component }      from '@angular/core';
-// import { CommonModule }   from '@angular/common';
-//
-// interface Trail {
-//   name:  string;
-//   desc:  string;
-//   image: string;
-// }
-//
-// @Component({
-//   selector: 'app-favourites',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './favourites.component.html',
-//   styleUrls:   ['./favourites.component.scss']
-// })
-// export class FavouritesComponent {
-//   // static data
-//   trails: Trail[] = [
-//     {
-//       name: 'Dabas taka Nr.1',
-//       desc: 'Pieejamais dabas takas apraksts.',
-//       image: 'https://via.placeholder.com/120x120?text=Img'
-//     },
-//     {
-//       name: 'Dabas taka Nr.2',
-//       desc: 'Pieejamais dabas takas apraksts.',
-//       image: 'https://via.placeholder.com/120x120?text=Img'
-//     },
-//     {
-//       name: 'Dabas taka Nr.3',
-//       desc: 'Pieejamais dabas takas apraksts.',
-//       image: 'https://via.placeholder.com/120x120?text=Img'
-//     }
-//   ];
-// }
-//
-//
-//
-// // src/app/pages/favourites/favourites.component.ts
-// // import { Component, OnInit }      from '@angular/core';
-// // import { FavouritesService, Trail } from './favourites.service';
-// // import { Observable }             from 'rxjs';
-// //
-// // @Component({
-// //   selector: 'app-favourites',
-// //   templateUrl: './favourites.component.html',
-// //   styleUrls: ['./favourites.component.scss']
-// // })
-// // export class FavouritesComponent implements OnInit {
-// //   favourites$: Observable<Trail[]>;   // stream of trails
-// //
-// //   constructor(private favSvc: FavouritesService) {}
-// //
-// //   ngOnInit() {
-// //     // subscribe only once; the | async pipe in template will keep it fresh
-// //     this.favourites$ = this.favSvc.getAll();
-// //   }
-// //
-// //   onRemove(trail: Trail) {
-// //     this.favSvc.remove(trail.id).subscribe(() => {
-// //       // re-fetch or optimistically remove from stream
-// //       this.favourites$ = this.favSvc.getAll();
-// //     });
-// //   }
-// //
-// //   // If you want to edit, you can open a dialog, then:
-// //   onUpdate(trail: Trail) {
-// //     this.favSvc.update(trail).subscribe(() => {
-// //       this.favourites$ = this.favSvc.getAll();
-// //     });
-// //   }
-// // }
-//
-//
-// // import { Component } from '@angular/core';
-// //
-// // @Component({
-// //   selector: 'app-favourites',
-// //   imports: [],
-// //   templateUrl: './favourites.component.html',
-// //   styleUrl: './favourites.component.scss'
-// // })
-// // export class FavouritesComponent {
-// //
-// // }
+  addFavorite(trailId: number): void {
+    if (!this.userId() || this.isSubmitting()) return;
+    this.isSubmitting.set(true);
+    this.isLoading.set(true);
+
+    this.favoriteService.add({
+      userId: this.userId()!,
+      trailId,
+      id: 0
+    }).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      finalize(() => {
+        this.isSubmitting.set(false);
+        this.isLoading.set(false);
+      })
+    ).subscribe({
+      next: () => {
+        this.message.success('Trail added to favorites');
+        this.loadTriggerSubj.next();
+      },
+      error: err => this.message.error('Failed to add favorite')
+    });
+  }
+
+  removeFavorite(trailId: number): void {
+    if (!this.userId()) return;
+
+    const favoriteToRemove = this.favorites().find(
+      f => f.userId === this.userId() && f.trailId === trailId
+    );
+
+    if (!favoriteToRemove) {
+      this.message.error('Favorite not found');
+      return;
+    }
+
+    this.favoriteService.delete(favoriteToRemove).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.message.success('Trail removed from favorites');
+        this.loadTriggerSubj.next();
+      },
+      error: err => this.message.error('Failed to remove favorite')
+    });
+  }
+
+  showDetails(trail: Trail): void {
+    this.selectedTrail.set(trail);
+    this.showTrailDetails.set(true);
+  }
+
+  closeTrailDetails(): void {
+    this.showTrailDetails.set(false);
+    this.selectedTrail.set(null);
+  }
+}

@@ -1,15 +1,16 @@
 package com.trek.ker.entity;
 
+import com.trek.ker.entity.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
 @Table(name = "users", schema = "trekker")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -19,6 +20,8 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

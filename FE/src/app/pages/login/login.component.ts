@@ -1,34 +1,49 @@
-
-
-// src/app/pages/login/login.component.ts
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  imports: [
+    ReactiveFormsModule,
+    RouterLink
+  ],
+  styleUrls: ['./login.component.scss'],
+  templateUrl: './login.component.html'
 })
 export class LoginComponent {
-  form: FormGroup;
-  constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({
+  formGroup: FormGroup;
+  errorMessage = '';
+  isSubmitting = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router
+  ) {
+    this.formGroup = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
   }
-  submit() { /* … */ }
+
+  submit() {
+    if (this.formGroup.invalid) return;
+    this.isSubmitting = true;
+
+    const email = this.formGroup.get('email')!.value;
+    const password = this.formGroup.get('password')!.value;
+
+    this.auth.login(email, password).subscribe({
+      next: () => {
+        this.router.navigate(['/welcome']);
+      },
+      error: () => {
+        this.errorMessage = 'Nepareizs e-pasts vai parole';
+        this.isSubmitting = false;
+      }
+    });
+  }
 }
-
-
-  // submit() {
-  //   // TODO: call your auth API
-  //   // for now just navigate on submit:
-  //   this.router.navigate(['/welcome']);
-  // }
-// }
-

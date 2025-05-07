@@ -1,25 +1,57 @@
 <div class="setup-page">
-  <h1>Trekker</h1>
+  <h1 class="app-title">Trekker</h1>
   <div class="card">
     <h2>Iestatīt kontu</h2>
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <label>
-        Lietotājvārds
-        <input formControlName="username" type="text" placeholder="Jūsu vārds" />
-      </label>
-      <label>
-        Parole
-        <input formControlName="password" type="password" placeholder="••••••••" />
-      </label>
-      <label>
-        Apstiprināt paroli
-        <input formControlName="confirm" type="password" placeholder="••••••••" />
-      </label>
-      <div *ngIf="form.hasError('mismatch')" class="error">
-        Paroles nesakrīt.
+    <form [formGroup]="formGroup" (ngSubmit)="submit()" novalidate>
+      <div class="form-group">
+        <label for="username">Lietotājvārds</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="Jūsu vārds"
+        />
       </div>
-      <button type="submit" [disabled]="form.invalid">Saglabāt</button>
+
+      @if (formGroup.get('username')?.hasError('required') && formGroup.get('username')?.touched) {
+        <div class="error">Lietotājvārds ir obligāts</div>
+      }
+
+      <div class="form-group">
+        <label for="password">Parole</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+        />
+      </div>
+
+      @if (formGroup.get('password')?.hasError('required') && formGroup.get('password')?.touched) {
+        <div class="error">Parole ir obligāta</div>
+      }
+
+      <div class="form-group">
+        <label for="confirm">Apstiprināt paroli</label>
+        <input
+          id="confirm"
+          type="password"
+          formControlName="confirm"
+          placeholder="••••••••"
+        />
+      </div>
+
+      @if (formGroup.hasError('mismatch') && formGroup.touched) {
+        <div class="error">Paroles nesakrīt.</div>
+      }
+
+      @if (errorMessage) {
+        <div class="error">{{ errorMessage }}</div>
+      }
+
+      <button type="submit" class="btn btn-submit" [disabled]="formGroup.invalid">
+        Saglabāt
+      </button>
     </form>
   </div>
 </div>
-

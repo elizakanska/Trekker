@@ -1,21 +1,47 @@
-<div class="login-page">
-  <h1>Trekker</h1>
+<div class="login-container">
+  <h1 class="app-title">Trekker</h1>
   <div class="card">
-    <h2>Pieslēgties</h2>
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <label>
-        E-pasts
-        <input formControlName="email" type="email" placeholder="jūsu@epasts.lv" />
-      </label>
-      <label>
-        Parole
-        <input formControlName="password" type="password" placeholder="••••••••" />
-      </label>
-      <button type="submit" [disabled]="form.invalid">Pieslēgties</button>
+    <h2>Pierakstīties</h2>
+
+    <form [formGroup]="formGroup" (ngSubmit)="submit()" class="login-form">
+      <div class="form-group">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="email@domain.com"
+        />
+      </div>
+
+      @if (formGroup.get('email')?.hasError('required') && formGroup.get('email')?.touched) {
+        <div class="error">E-pasta ievade ir obligāta</div>
+      }
+      @if (formGroup.get('email')?.hasError('email') && formGroup.get('email')?.touched) {
+        <div class="error">Lūdzu ievadiet korektu e-pastu.</div>
+      }
+
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+        />
+      </div>
+
+      @if (formGroup.get('password')?.hasError('required') && formGroup.get('password')?.touched) {
+        <div class="error">Paroles ievade ir obligāta</div>
+      }
+
+      @if (errorMessage) {
+        <div class="error">{{ errorMessage }}</div>
+      }
+
+      <button type="submit" class="btn btn-submit" [disabled]="formGroup.invalid">
+        Pieslēgties
+      </button>
     </form>
-    <p class="note">
-      Ja vēl neesat reģistrējies, <a routerLink="/signup">izveido kontu</a>.
+
+    <p class="signup-link">
+      Vēl nav konts? <a routerLink="/signup">Reģistrējies!</a>
     </p>
   </div>
 </div>
-

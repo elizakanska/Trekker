@@ -1,46 +1,48 @@
-import { Component }        from '@angular/core';
-import {Router, RouterModule} from '@angular/router';
-import { NzLayoutModule }   from 'ng-zorro-antd/layout';
-import { NzMenuModule }     from 'ng-zorro-antd/menu';
-import { NzIconModule }     from 'ng-zorro-antd/icon';
-import {NgOptimizedImage} from '@angular/common';
+import { Component } from '@angular/core';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
+import { AuthService } from './services/auth.service';
+import {
+  NzContentComponent,
+  NzFooterComponent,
+  NzHeaderComponent,
+  NzLayoutComponent,
+  NzSiderComponent
+} from 'ng-zorro-antd/layout';
+import {NzMenuDirective, NzMenuItemComponent} from 'ng-zorro-antd/menu';
+import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-shell',
-  standalone: true,
-  imports: [
-    RouterModule,
-    NzLayoutModule,
-    NzMenuModule,
-    NzIconModule,
-    NgOptimizedImage,
-    NzButtonComponent
-  ],
   templateUrl: './shell.component.html',
-  styleUrls:   ['./shell.component.scss']
+  imports: [
+    NzLayoutComponent,
+    NzSiderComponent,
+    NzMenuDirective,
+    NzMenuItemComponent,
+    RouterLink,
+    NzIconDirective,
+    NzHeaderComponent,
+    NzButtonComponent,
+    NzContentComponent,
+    RouterOutlet,
+    NzFooterComponent,
+    NgOptimizedImage
+  ],
+  styleUrls: ['./shell.component.scss']
 })
 export class ShellComponent {
   isCollapsed = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   logout() {
-    // TODO: clear any auth tokens you need here...
-    this.router.navigate(['/']);
+    this.authService.logout();
+    this.router.navigate(['/landing']);
+  }
+
+  get isAuthenticated() {
+    return this.authService.isLoggedIn();
   }
 }
-
-
-
-// import { Component } from '@angular/core';
-//
-// @Component({
-//   selector: 'app-shell',
-//   imports: [],
-//   templateUrl: './shell.component.html',
-//   styleUrl: './shell.component.scss'
-// })
-// export class ShellComponent {
-//
-// }
