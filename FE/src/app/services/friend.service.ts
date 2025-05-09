@@ -1,22 +1,35 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API_URL } from './constants/constants';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Friend } from '../models/friend.model';
+import { Observable } from 'rxjs';
+import { API_URL } from './constants/constants';
+import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class FriendService {
-  constructor(private http: HttpClient) {}
+  private readonly baseUrl = `${API_URL}/friends`;
 
-  getFriendships(userId: number): Observable<Friend[]> {
-    return this.http.get<Friend[]>(`${API_URL}/friends/user/${userId}`);
+  constructor(private http: HttpClient, private auth: AuthService) {}
+
+  getFriendsByUser(userId: number): Observable<Friend[]> {
+    const token = this.auth.getToken();
+    return this.http.get<Friend[]>(`${this.baseUrl}/user/${userId}`, {
+      headers: new HttpHeaders({ Authorization: `Bearer ${token}` })
+    });
   }
 
-  add(friend: Friend): Observable<Friend> {
-    return this.http.post<Friend>(`${API_URL}/friends`, friend);
+  addFriend(friend: Friend): Observable<Friend> {
+    const token = this.auth.getToken();
+    return this.http.post<Friend>(this.baseUrl, friend, {
+      headers: new HttpHeaders({ Authorization: `Bearer ${token}` })
+    });
   }
 
-  delete(friend: Friend): Observable<void> {
-    return this.http.delete<void>(`${API_URL}/friends`, { body: friend });
+  deleteFriend(friend: Friend): Observable<void> {
+    const token = this.auth.getToken();
+    return this.http.request<void>('delete', this.baseUrl, {
+      body: friend,
+      headers: new HttpHeaders({ Authorization: `Bearer ${token}` })
+    });
   }
 }

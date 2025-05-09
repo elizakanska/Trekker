@@ -10,4 +10,6 @@ import lombok.NoArgsConstructor;
 public class FriendDto {
     private Long user1Id;
     private Long friendId;
+
+    private UserDto friend;
 }

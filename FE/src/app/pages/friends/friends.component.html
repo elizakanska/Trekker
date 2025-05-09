@@ -1,22 +1,22 @@
 <div class="friends-page">
-  <button class="btn-add">Pievienot jaunu draugu</button>
+  <button class="btn-add" [routerLink]="'/friend-form'">Pievienot jaunu draugu</button>
 
-  <div class="grid">
-    <div class="friend-card" *ngFor="let f of friends">
-      <img [src]="f.image" alt="{{ f.name }}" class="thumb" />
-      <div class="name">{{ f.name }}</div>
+  @if (friends().length === 0) {
+    <div class="no-friends">
+      <div class="modal-content">
+        <p>Tev vēl nav draugu 🤣</p>
+        <button nz-button nzType="primary" [routerLink]="'/friend-form'">Atrodi draugus</button>
+      </div>
     </div>
-  </div>
+  } @else {
+    <div class="grid">
+      @for (f of friends(); track f.friendId) {
+        <div class="friend-card">
+          <!--suppress HtmlUnknownTarget -->
+          <img src="avatar.png" [alt]="f.friend.username" class="thumb" />
+          <div class="name">{{ f.friend.username }}</div>
+        </div>
+      }
+    </div>
+  }
 </div>
-
-
-<!--<div class="friends-grid">
-    <div class="friend-card" *ngFor="let friend of friends">
-      <div class="thumb">
-        <img [src]="friend.avatar || placeholder" alt="{{friend.name}}" />
-      </div>
-      <div class="info">
-        <p class="name">{{ friend.name }}</p>
-      </div>
-    </div>
-  </div>-->

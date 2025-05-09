@@ -1,41 +1,27 @@
-import { Component }    from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface Friend {
-  name:  string;
-  image: string;
-}
+import { Friend } from '../../models/friend.model';
+import { FriendService } from '../../services/friend.service';
+import { AuthService } from '../../services/auth.service';
+import { RouterLink } from '@angular/router';
+import {NzButtonComponent} from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'app-friends',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, NzButtonComponent],
   templateUrl: './friends.component.html',
-  styleUrls:   ['./friends.component.scss']
+  styleUrls: ['./friends.component.scss'],
 })
 export class FriendsComponent {
-  // static list
-  friends: Friend[] = [
-    { name: 'Jānis Programmētājs',    image: 'https://via.placeholder.com/180?text=Img' },
-    { name: 'Pēteris Testētājs',       image: 'https://via.placeholder.com/180?text=Img' },
-    { name: 'Māris Sistēmanalītiķis', image: 'https://via.placeholder.com/180?text=Img' },
-    { name: 'Frīdrihs Klients',       image: 'https://via.placeholder.com/180?text=Img' },
-    { name: 'Nauris Vadītājs',        image: 'https://via.placeholder.com/180?text=Img' },
-    { name: 'Guntis Juniors',         image: 'https://via.placeholder.com/180?text=Img' }
-  ];
+  friends = signal<Friend[]>([]);
+
+  constructor(private friendSvc: FriendService, private auth: AuthService) {
+    effect(() => {
+      const uid = this.auth.getCurrentUserId();
+      this.friendSvc.getFriendsByUser(uid).subscribe((data) => {
+        this.friends.set(data || []);
+      });
+    });
+  }
 }
-
-
-
-
-// import { Component } from '@angular/core';
-//
-// @Component({
-//   selector: 'app-friends',
-//   imports: [],
-//   templateUrl: './friends.component.html',
-//   styleUrl: './friends.component.scss'
-// })
-// export class FriendsComponent {
-//
-// }
