@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SessionDto {
-    private Long id;
-
-    private Long inviteCode;
-
     private Long user1Id;
     private Long user2Id;
+    private Long inviteCode;
 }

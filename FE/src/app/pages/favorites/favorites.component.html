@@ -1,55 +1,60 @@
-<div class="trail-list">
-  @for (trail of trails(); track trail) {
-    <div class="trail-item">
-      <img
-        class="trail-thumb"
-        [src]="trail.image"
-        alt="{{ trail.name }}"
-      />
-
-      <div class="trail-info">
-        <h3>{{ trail.name }}</h3>
-        <p>{{ trail.type }}</p>
-        <button
-          nz-button
-          nzType="primary"
-          (click)="showDetails(trail)">
-          <span nz-icon nzType="eye"></span>
-          Apskatīt
-        </button>
-      </div>
+<div class="trail-list" *ngIf="favorites().length; else noFavs">
+  <div class="trail-item" *ngFor="let fav of favorites()">
+    <img
+      class="trail-thumb"
+      [ngSrc]="fav.trail.image"
+      [alt]="fav.trail.name"
+      width="120"
+      height="120"
+      priority
+    />
+    <div class="trail-info">
+      <h3>{{ fav.trail.name }}</h3>
+      <p>{{ fav.trail.type }}</p>
+      <button nz-button nzType="primary" (click)="showDetails(fav.trail!)">
+        <span nz-icon nzType="eye"></span>
+        Apskatīt
+      </button>
     </div>
-  }
+  </div>
 </div>
 
-<!-- Trail Details Modal -->
-<div class="modal" [ngClass]="{ 'is-visible': showTrailDetails() }">
-  <div class="modal-content custom-form">
-    @if (selectedTrail(); as trail) {
-      <h3>{{ trail.name }}</h3>
-      <p><strong>Tips:</strong> {{ trail.type }}</p>
-      <p><strong>Sarežģītība:</strong> {{ trail.difficulty }}</p>
-      <p><strong>Garums:</strong> {{ trail.length }} km</p>
-      <p><strong>Atrašanās vieta:</strong> {{ trail.location }}</p>
-      <p><strong>Bioma:</strong> {{ trail.biome }}</p>
+<ng-template #noFavs>
+  <div class="no-favs">
+    <div class="modal-content">
+      <p>Nav mīļāko taku.</p>
+      <button
+        nz-button
+        nzType="primary"
+        routerLink="/session"
+      > Sāc meklēt takas kopā ar draugu! </button>
+    </div>
+  </div>
+</ng-template>
 
-      <div class="button-group">
-        <button
-          nz-button
-          nzType="primary"
-          nzDanger
-          [nzLoading]="isSubmitting()"
-          (click)="removeFavorite(trail.id)">
-          <span nz-icon nzType="delete"></span>
-          Noņemt no mīļākajām takām
-        </button>
-        <button
-          nz-button
-          nzType="default"
-          (click)="closeTrailDetails()">
-          Aizvērt
-        </button>
-      </div>
-    }
+<div class="modal" [class.is-visible]="!!selectedTrail()">
+  <div class="modal-content" *ngIf="selectedTrail() as trail">
+    <h3>{{ trail.name }}</h3>
+    <p><strong>Tips:</strong> {{ trail.type }}</p>
+    <p><strong>Sarežģītība:</strong> {{ trail.difficulty }}</p>
+    <p><strong>Garums:</strong> {{ trail.length }} km</p>
+    <p><strong>Atrašanās vieta:</strong> {{ trail.location }}</p>
+    <p><strong>Bioma:</strong> {{ trail.biome }}</p>
+
+    <div class="button-group">
+      <button
+        nz-button
+        nzType="primary"
+        nzDanger
+        [nzLoading]="isSubmitting()"
+        (click)="removeFavorite(trail.id)"
+      >
+        <span nz-icon nzType="delete"></span>
+        Noņemt no mīļākajām takām
+      </button>
+      <button nz-button nzType="default" (click)="closeTrailDetails()">
+        Aizvērt
+      </button>
+    </div>
   </div>
 </div>

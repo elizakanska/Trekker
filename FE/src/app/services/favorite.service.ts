@@ -1,22 +1,37 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { API_URL } from './constants/constants';
-import { Observable } from 'rxjs';
 import { Favorite } from '../models/favorite.model';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class FavoriteService {
-  constructor(private http: HttpClient) {}
+  private readonly baseUrl = `${API_URL}/favorites`;
 
-  add(favorite: Favorite): Observable<Favorite> {
-    return this.http.post<Favorite>(`${API_URL}/favorites`, favorite);
+  constructor(private http: HttpClient, private auth: AuthService) {}
+
+  getFavoritesByUser(userId: number): Observable<Favorite[]> {
+    const token = this.auth.getToken();
+    return this.http.get<Favorite[]>(
+      `${this.baseUrl}/user/${userId}`,
+      {
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${token}`
+        })
+      }
+    );
   }
 
-  getByUser(userId: number): Observable<Favorite[]> {
-    return this.http.get<Favorite[]>(`${API_URL}/favorites/user/${userId}`);
-  }
-
-  delete(favorite: Favorite): Observable<void> {
-    return this.http.delete<void>(`${API_URL}/favorites`, { body: favorite });
+  removeFavorite(userId: number, trailId: number): Observable<void> {
+    const token = this.auth.getToken();
+    return this.http.delete<void>(
+      `${this.baseUrl}/user/${userId}/trail/${trailId}`,
+      {
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${token}`
+        })
+      }
+    );
   }
 }

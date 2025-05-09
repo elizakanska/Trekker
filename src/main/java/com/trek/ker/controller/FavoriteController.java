@@ -39,10 +39,8 @@ public class FavoriteController {
                 .toList();
     }
 
-    @DeleteMapping
-    public void delete(@RequestBody FavoriteDto dto) {
-        service.removeFavorite(new FavoriteId(dto.getUserId(), dto.getTrailId()));
+    @DeleteMapping("/user/{userId}/trail/{trailId}")
+    public void delete(@PathVariable Long userId, @PathVariable Long trailId) {
+        service.removeFavorite(new FavoriteId(userId, trailId));
     }
-
 }
-

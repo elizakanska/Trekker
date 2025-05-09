@@ -29,7 +29,6 @@ CREATE TABLE friends (
 CREATE TABLE favorites (
     user_id INT NOT NULL,
     trail_id INT NOT NULL,
-    rating INT NOT NULL,
     PRIMARY KEY (user_id, trail_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (trail_id) REFERENCES trails(id) ON DELETE CASCADE

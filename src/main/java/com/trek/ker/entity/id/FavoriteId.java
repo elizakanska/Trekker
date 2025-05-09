@@ -1,15 +1,25 @@
 package com.trek.ker.entity.id;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 
-@Data
-@AllArgsConstructor
+@Embeddable
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class FavoriteId implements Serializable {
-    private Long user;
-    private Long trail;
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
+    @Column(name = "trail_id", nullable = false)
+    private Long trailId;
 }

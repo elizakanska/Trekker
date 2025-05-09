@@ -2,25 +2,32 @@ package com.trek.ker.entity;
 
 import com.trek.ker.entity.id.FavoriteId;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
 @Entity
-@Table(name = "favorites")
-@IdClass(FavoriteId.class)
-@AllArgsConstructor
+@Table(name = "favorites", schema = "trekker")
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Favorite {
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+
+    @EmbeddedId
+    @AttributeOverrides({
+            @AttributeOverride(name = "userId", column = @Column(name = "user_id")),
+            @AttributeOverride(name = "trailId", column = @Column(name = "trail_id"))
+    })
+    private FavoriteId id;
+
+    @MapsId("userId")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "trail_id")
+    @MapsId("trailId")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "trail_id", insertable = false, updatable = false)
     private Trail trail;
 }
+
 
