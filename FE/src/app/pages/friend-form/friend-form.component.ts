@@ -1,54 +1,55 @@
-import { Component }          from '@angular/core';
-import {ReactiveFormsModule, FormBuilder, Validators, FormGroup} from '@angular/forms';
-import { CommonModule }       from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
+import { FriendService } from '../../services/friend.service';
+import { AuthService } from '../../services/auth.service';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-friend-form',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './friend-form.component.html',
-  styleUrls:   ['./friend-form.component.scss']
+  imports: [
+    ReactiveFormsModule,
+    NgIf
+  ],
+  styleUrls: ['./friend-form.component.scss']
 })
-export class FriendFormComponent {
-  form!: FormGroup;   // declare but don’t inline-init
-  constructor(private fb: FormBuilder, private router: Router) {
+export class FriendFormComponent implements OnInit {
+  form: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private friendService: FriendService,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.form = this.fb.group({
-      name:    ['', Validators.required],
-      message: ['Savienojamies un izvēlamies taku!', Validators.required]
+      name: ['', [Validators.required]],
+      message: ['', [Validators.required]]
     });
   }
 
-  // form = this.fb.group({
-  //   name:    ['', Validators.required],
-  //   message: ['Savienojamies un izvēlamies taku!', Validators.required]
-  // });
+  ngOnInit(): void {}
 
-  cancel() {
-    this.router.navigate(['/friends']);
+  submit(): void {
+    if (this.form.valid) {
+      const userId = this.authService.getCurrentUserId();
+      const friendUsername = this.form.get('name')?.value;
+      const message = this.form.get('message')?.value;
+
+      this.friendService.addFriend(friendUsername).subscribe(
+        () => {
+          console.log('Friend added');
+          this.router.navigate(['/friends']);
+        },
+        (error) => {
+          console.error('Error adding friend:', error);
+        }
+      );
+    }
   }
 
-  submit() {
-    if (this.form.invalid) return;
-    const { name, message } = this.form.value;
-    console.log('Invite sent to', name, 'with message', message);
-    // TODO: call your backend
+  cancel(): void {
     this.router.navigate(['/friends']);
   }
 }
-
-
-
-
-// import { Component } from '@angular/core';
-//
-// @Component({
-//   selector: 'app-friend-form',
-//   imports: [],
-//   templateUrl: './friend-form.component.html',
-//   styleUrl: './friend-form.component.scss'
-// })
-// export class FriendFormComponent {
-//   // form: FormGroup;
-//
-// }

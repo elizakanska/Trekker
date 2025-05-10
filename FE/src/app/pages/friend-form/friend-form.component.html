@@ -1,6 +1,5 @@
 <div class="form-wrapper">
   <form [formGroup]="form" (ngSubmit)="submit()">
-<!--    -->
     <h2>Pievienot draugu</h2>
 
     <label for="name">Drauga vārds</label>
@@ -27,11 +26,9 @@
 
     <div class="actions">
       <button type="button" class="btn-cancel" (click)="cancel()">
-<!--        (click)="cancel()"-->
         Atcelt &times;
       </button>
       <button type="submit" class="btn-submit" [disabled]="form.invalid">
-<!--        disabled]="form.invalid"-->
         Savienoties
       </button>
     </div>

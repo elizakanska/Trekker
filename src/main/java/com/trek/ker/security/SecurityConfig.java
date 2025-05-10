@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/trails/**").authenticated()
+                        .requestMatchers("/api/friends/**").authenticated()
                         .requestMatchers("/api/friends/user/**").authenticated()
                         .requestMatchers("/api/favorites/user/**").authenticated()
                         .requestMatchers("/api/sessions/user/**").authenticated()

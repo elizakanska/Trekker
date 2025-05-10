@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Friend } from '../models/friend.model';
-import { Observable } from 'rxjs';
+import {catchError, Observable, throwError} from 'rxjs';
 import { API_URL } from './constants/constants';
 import { AuthService } from './auth.service';
 
@@ -22,7 +22,12 @@ export class FriendService {
     const token = this.auth.getToken();
     return this.http.post<Friend>(this.baseUrl, friend, {
       headers: new HttpHeaders({ Authorization: `Bearer ${token}` })
-    });
+    }).pipe(
+      catchError(error => {
+        console.error('Error adding friend:', error);
+        return throwError(() => new Error('Failed to add friend'));
+      })
+    );
   }
 
   deleteFriend(friend: Friend): Observable<void> {

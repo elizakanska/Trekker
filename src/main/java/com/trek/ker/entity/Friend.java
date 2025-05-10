@@ -31,5 +31,9 @@ public class Friend {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "friend_id", insertable = false, updatable = false)
     private User friend;
+
+    public Friend(FriendId friendId) {
+        this.id = friendId;
+    }
 }
 

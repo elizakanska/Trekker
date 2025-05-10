@@ -12,11 +12,38 @@
     <div class="grid">
       @for (f of friends(); track f.friendId) {
         <div class="friend-card">
-          <!--suppress HtmlUnknownTarget -->
-          <img src="avatar.png" [alt]="f.friend.username" class="thumb" />
-          <div class="name">{{ f.friend.username }}</div>
+          <a (click)="showDetails(f.friend)">
+            <!--suppress HtmlUnknownTarget -->
+            <img src="avatar.png" [alt]="f.friend.username" class="thumb" />
+            <div class="name">{{ f.friend.username }}</div>
+          </a>
         </div>
       }
     </div>
   }
+</div>
+
+<div class="modal" [class.is-visible]="!!selectedFriend()">
+  <div class="modal-content" *ngIf="selectedFriend() as friend">
+    <!--suppress HtmlUnknownTarget -->
+    <img src="avatar.png" [alt]="friend.username" class="modal-image" />
+    <h3>{{ friend.username }}</h3>
+    <p><strong>E-pasts:</strong> {{ friend.email }}</p>
+
+    <div class="button-group">
+      <button
+        nz-button
+        nzType="primary"
+        nzDanger
+        [nzLoading]="isDeleting()"
+        (click)="deleteFriend(friend.id)"
+      >
+        <span nz-icon nzType="delete"></span>
+        Noņemt no draugu saraksta
+      </button>
+      <button nz-button nzType="default" (click)="closeDetails()">
+        Aizvērt
+      </button>
+    </div>
+  </div>
 </div>

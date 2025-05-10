@@ -6,6 +6,7 @@ import com.trek.ker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
@@ -57,5 +58,9 @@ public class UserService {
 
     public Optional<User> findByEmail(String email) {
         return userRepo.findByEmail(email);
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 }
