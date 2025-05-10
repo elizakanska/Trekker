@@ -27,10 +27,10 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
-
     private final CustomUserDetailsService userDetailsService;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter, CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter,
+                          CustomUserDetailsService userDetailsService) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.userDetailsService = userDetailsService;
     }
@@ -43,11 +43,20 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/users/**").authenticated()
+                        .requestMatchers("/api/users/email/**").authenticated()
                         .requestMatchers("/api/trails/**").authenticated()
                         .requestMatchers("/api/friends/**").authenticated()
                         .requestMatchers("/api/friends/user/**").authenticated()
+                        .requestMatchers("/api/favorites/**").authenticated()
                         .requestMatchers("/api/favorites/user/**").authenticated()
-                        .requestMatchers("/api/sessions/user/**").authenticated()
+                        .requestMatchers("/api/sessions").authenticated()
+                        .requestMatchers("/api/sessions/*/join").authenticated()
+                        .requestMatchers("/api/sessions/*/*/filters").authenticated()
+                        .requestMatchers("/api/sessions/*/*/trails").authenticated()
+                        .requestMatchers("/api/sessions/*/*/likes").authenticated()
+                        .requestMatchers("/api/sessions/*/*/mutual").authenticated()
+                        .requestMatchers("/api/sessions/*/*/rank").authenticated()
+                        .requestMatchers("/api/sessions/*/*/final").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess
@@ -73,7 +82,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
@@ -81,15 +91,14 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:4200"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-
 }
-

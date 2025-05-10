@@ -1,7 +1,13 @@
 package com.trek.ker.entity;
 
 import com.trek.ker.entity.id.SessionId;
-import jakarta.persistence.*;
+import com.trek.ker.entity.enums.SessionState;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,25 +20,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Session {
-
     @EmbeddedId
-    @AttributeOverrides({
-            @AttributeOverride(name = "user1Id", column = @Column(name = "user1_id")),
-            @AttributeOverride(name = "user2Id", column = @Column(name = "user2_id"))
-    })
     private SessionId id;
-
-    @MapsId("user1Id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user1_id", insertable = false, updatable = false)
-    private User user1;
-
-    @MapsId("user2Id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user2_id", insertable = false, updatable = false)
-    private User user2;
-
-    @Column(name = "invite_code")
-    private Long inviteCode;
+    @Column(name = "invite_code", unique = true, nullable = false)
+    private String inviteCode;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state", nullable = false)
+    private SessionState state;
+    @Column(name = "length_min")
+    private Float lengthMin;
+    @Column(name = "length_max")
+    private Float lengthMax;
+    @Column(name = "difficulty")
+    private String difficulty;
+    @Column(name = "biome")
+    private String biome;
 }
-
