@@ -1,17 +1,16 @@
 <div class="choose-trail">
-  <h2 class="heading">Izvēlieties dabas taku, kura Jums patīk!</h2>
+  <h2 class="heading">Sāc jaunu sesiju vai pievienojies ar kodu</h2>
 
   <div class="options-grid">
-    <div
-      class="option-card"
-      *ngFor="let opt of options"
-      [ngClass]="opt.css"
-      role="button"
-      tabindex="0"
-      (click)="select(opt)"
-      (keyup.enter)="select(opt)"
-    >
-      <h3>{{ opt.title }}</h3>
+    <div class="option-card option-primary" role="button" (click)="create()">
+      <h3>Izveidot jaunu sesiju</h3>
+    </div>
+    <div class="option-card option-accent">
+      <h3>Pievienoties ar kodu</h3>
+      <input nz-input placeholder="Ievadi kodu" [(ngModel)]="inviteCode"/>
+      <button nz-button (click)="join()" [disabled]="!inviteCode">
+        Pievienoties
+      </button>
     </div>
   </div>
 </div>

@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SessionDto {
+    private Long id;
     private Long user1Id;
     private Long user2Id;
     private String inviteCode;
     private SessionState state;
-    private Float lengthMin;
-    private Float lengthMax;
+    private Double lengthMin;
+    private Double lengthMax;
     private String difficulty;
     private String biome;
 }

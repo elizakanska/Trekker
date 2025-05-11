@@ -4,7 +4,6 @@ import com.trek.ker.entity.Session;
 import com.trek.ker.entity.SessionLike;
 import com.trek.ker.entity.SessionResult;
 import com.trek.ker.entity.Trail;
-import com.trek.ker.entity.id.SessionId;
 import com.trek.ker.service.SessionService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,38 +28,54 @@ public class SessionController {
         return service.joinSession(invite, user2Id);
     }
 
-    @PatchMapping("/{user1Id}/{user2Id}/filters")
-    public Session filters(@PathVariable Long user1Id, @PathVariable Long user2Id,
-                           @RequestParam Float min, @RequestParam Float max,
-                           @RequestParam String difficulty, @RequestParam String biome) {
-        return service.setFilters(new SessionId(user1Id, user2Id), min, max, difficulty, biome);
+    @PatchMapping("/{sessionId}/filters")
+    public Session setFilters(
+            @PathVariable Long sessionId,
+            @RequestParam Float min,
+            @RequestParam Float max,
+            @RequestParam String difficulty,
+            @RequestParam String biome
+    ) {
+        return service.setFilters(sessionId, min, max, difficulty, biome);
     }
 
-    @GetMapping("/{user1Id}/{user2Id}/trails")
-    public List<Trail> begin(@PathVariable Long user1Id, @PathVariable Long user2Id) {
-        return service.beginRound(new SessionId(user1Id, user2Id));
+    @GetMapping("/{sessionId}/trails")
+    public List<Trail> begin(
+            @PathVariable Long sessionId
+    ) {
+        return service.beginRound(sessionId);
     }
 
-    @PostMapping("/{user1Id}/{user2Id}/likes")
-    public SessionLike like(@PathVariable Long user1Id, @PathVariable Long user2Id,
-                            @RequestParam Long trailId, @RequestParam Long userId,
-                            @RequestParam boolean liked, @RequestParam int round) {
-        return service.recordLike(new SessionId(user1Id, user2Id), trailId, userId, liked, round);
+    @PostMapping("/{sessionId}/likes")
+    public SessionLike like(
+            @PathVariable Long sessionId,
+            @RequestParam Long trailId,
+            @RequestParam Long userId,
+            @RequestParam boolean liked,
+            @RequestParam int round
+    ) {
+        return service.recordLike(sessionId, trailId, userId, liked, round);
     }
 
-    @GetMapping("/{user1Id}/{user2Id}/mutual")
-    public List<Trail> mutual(@PathVariable Long user1Id, @PathVariable Long user2Id) {
-        return service.mutualLikes(new SessionId(user1Id, user2Id));
+    @GetMapping("/{sessionId}/mutual")
+    public List<Trail> mutual(
+            @PathVariable Long sessionId
+    ) {
+        return service.mutualLikes(sessionId);
     }
 
-    @PostMapping("/{user1Id}/{user2Id}/rank")
-    public List<SessionResult> rank(@PathVariable Long user1Id, @PathVariable Long user2Id,
-                                    @RequestParam int round) {
-        return service.rankingRound(new SessionId(user1Id, user2Id), round);
+    @PostMapping("/{sessionId}/rank")
+    public List<SessionResult> rank(
+            @PathVariable Long sessionId,
+            @RequestParam int round
+    ) {
+        return service.rankingRound(sessionId, round);
     }
 
-    @GetMapping("/{user1Id}/{user2Id}/final")
-    public List<SessionResult> finish(@PathVariable Long user1Id, @PathVariable Long user2Id) {
-        return service.finalizeSession(new SessionId(user1Id, user2Id));
+    @GetMapping("/{sessionId}/final")
+    public List<SessionResult> finish(
+            @PathVariable Long sessionId
+    ) {
+        return service.finalizeSession(sessionId);
     }
 }

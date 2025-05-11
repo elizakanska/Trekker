@@ -37,43 +37,34 @@ CREATE TABLE favorites
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (trail_id) REFERENCES trails (id) ON DELETE CASCADE
 );
--- Tables for keeping sessions and their data
-CREATE TABLE trekker.sessions
+-- Tables for session data
+CREATE TABLE sessions
 (
-    user1_id    BIGINT       NOT NULL,
-    user2_id    BIGINT,
+    id       BIGSERIAL PRIMARY KEY,
+    user1_id BIGINT NOT NULL REFERENCES trekker.users (id),
+    user2_id BIGINT NULL REFERENCES trekker.users (id),
     invite_code VARCHAR(255) NOT NULL UNIQUE,
     state       VARCHAR(50)  NOT NULL,
     length_min  DOUBLE PRECISION,
     length_max  DOUBLE PRECISION,
     difficulty  VARCHAR(50),
-    biome       VARCHAR(50),
-    PRIMARY KEY (user1_id, user2_id),
-    FOREIGN KEY (user1_id) REFERENCES trekker.users (id),
-    FOREIGN KEY (user2_id) REFERENCES trekker.users (id)
+    biome    VARCHAR(50)
 );
 
-CREATE TABLE trekker.session_likes
+CREATE TABLE session_likes
 (
-    id               SERIAL PRIMARY KEY,
-    session_user1_id BIGINT  NOT NULL,
-    session_user2_id BIGINT  NOT NULL,
-    trail_id         BIGINT  NOT NULL,
-    user_id          BIGINT  NOT NULL,
-    liked            BOOLEAN NOT NULL,
-    round            INTEGER NOT NULL,
-    FOREIGN KEY (session_user1_id, session_user2_id) REFERENCES trekker.sessions (user1_id, user2_id),
-    FOREIGN KEY (trail_id) REFERENCES trekker.trails (id),
-    FOREIGN KEY (user_id) REFERENCES trekker.users (id)
+    id         SERIAL PRIMARY KEY,
+    session_id BIGINT  NOT NULL REFERENCES trekker.sessions (id),
+    trail_id   BIGINT  NOT NULL REFERENCES trekker.trails (id),
+    user_id    BIGINT  NOT NULL REFERENCES trekker.users (id),
+    liked      BOOLEAN NOT NULL,
+    round      INTEGER NOT NULL
 );
 
-CREATE TABLE trekker.session_results
+CREATE TABLE session_results
 (
-    id               SERIAL PRIMARY KEY,
-    session_user1_id BIGINT  NOT NULL,
-    session_user2_id BIGINT  NOT NULL,
-    trail_id         BIGINT  NOT NULL,
-    final_rank       INTEGER NOT NULL,
-    FOREIGN KEY (session_user1_id, session_user2_id) REFERENCES trekker.sessions (user1_id, user2_id),
-    FOREIGN KEY (trail_id) REFERENCES trekker.trails (id)
+    id         SERIAL PRIMARY KEY,
+    session_id BIGINT  NOT NULL REFERENCES trekker.sessions (id),
+    trail_id   BIGINT  NOT NULL REFERENCES trekker.trails (id),
+    final_rank INTEGER NOT NULL
 );

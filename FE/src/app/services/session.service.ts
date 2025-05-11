@@ -1,30 +1,40 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { API_URL } from './constants/constants';
+import {AuthService} from './auth.service';
 import { Observable } from 'rxjs';
 import { Session } from '../models/session.model';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {
-  constructor(private http: HttpClient) {}
+  private readonly baseUrl = `${API_URL}/sessions`;
 
-  getActiveSessions(userId: number): Observable<Session[]> {
-    return this.http.get<Session[]>(`${API_URL}/sessions/user/${userId}`);
+  constructor(private http: HttpClient, private auth: AuthService) {
   }
 
-  getByInviteCode(inviteCode: number): Observable<Session> {
-    return this.http.get<Session>(`${API_URL}/sessions/invite/${inviteCode}`);
+  createSession(): Observable<Session> {
+    const token = this.auth.getToken();
+    const user1Id = this.auth.getCurrentUserId();
+    return this.http.post<Session>(
+      this.baseUrl,
+      null,
+      {
+        params: {user1Id},
+        headers: new HttpHeaders({Authorization: `Bearer ${token}`})
+      }
+    );
   }
 
-  create(session: Session): Observable<Session> {
-    return this.http.post<Session>(`${API_URL}/sessions`, session);
-  }
-
-  getById(user1Id: number, user2Id: number): Observable<Session> {
-    return this.http.get<Session>(`${API_URL}/sessions/${user1Id}/${user2Id}`);
-  }
-
-  delete(session: Session): Observable<void> {
-    return this.http.delete<void>(`${API_URL}/sessions`, { body: session });
+  joinSession(inviteCode: string): Observable<Session> {
+    const token = this.auth.getToken();
+    const user2Id = this.auth.getCurrentUserId();
+    return this.http.post<Session>(
+      `${this.baseUrl}/${inviteCode}/join`,
+      null,
+      {
+        params: {user2Id},
+        headers: new HttpHeaders({Authorization: `Bearer ${token}`})
+      }
+    );
   }
 }

@@ -6,7 +6,6 @@ import com.trek.ker.entity.SessionResult;
 import com.trek.ker.entity.Trail;
 import com.trek.ker.entity.User;
 import com.trek.ker.entity.enums.SessionState;
-import com.trek.ker.entity.id.SessionId;
 import com.trek.ker.repository.SessionLikeRepository;
 import com.trek.ker.repository.SessionRepository;
 import com.trek.ker.repository.SessionResultRepository;
@@ -40,20 +39,23 @@ public class SessionService {
 
     public Session createSession(Long user1Id) {
         String invite = UUID.randomUUID().toString().substring(0, 6);
-        Session s = new Session(new SessionId(user1Id, null), invite, SessionState.CREATED, null, null, null, null);
+        Session s = new Session();
+        s.setUser1Id(user1Id);
+        s.setInviteCode(invite);
+        s.setState(SessionState.CREATED);
         return sessionRepo.save(s);
     }
 
     @Transactional
     public Session joinSession(String inviteCode, Long user2Id) {
         Session s = sessionRepo.findByInviteCode(inviteCode).orElseThrow();
-        s.getId().setUser2Id(user2Id);
+        s.setUser2Id(user2Id);
         s.setState(SessionState.JOINED);
         return sessionRepo.save(s);
     }
 
     @Transactional
-    public Session setFilters(SessionId id, Float min, Float max, String diff, String biome) {
+    public Session setFilters(Long id, Float min, Float max, String diff, String biome) {
         Session s = sessionRepo.findById(id).orElseThrow();
         s.setLengthMin(min);
         s.setLengthMax(max);
@@ -63,7 +65,7 @@ public class SessionService {
         return sessionRepo.save(s);
     }
 
-    public List<Trail> beginRound(SessionId id) {
+    public List<Trail> beginRound(Long id) {
         Session s = sessionRepo.findById(id).orElseThrow();
         List<Trail> list = trailRepo.findByLengthBetweenAndDifficultyAndBiome(
                 s.getLengthMin(), s.getLengthMax(), s.getDifficulty(), s.getBiome());
@@ -74,63 +76,70 @@ public class SessionService {
     }
 
     @Transactional
-    public SessionLike recordLike(SessionId id, Long trailId, Long userId, boolean liked, int round) {
-        Session s = sessionRepo.findById(id).orElseThrow();
+    public SessionLike recordLike(Long sessionId, Long trailId, Long userId, boolean liked, int round) {
+        Session s = sessionRepo.findById(sessionId).orElseThrow();
         User u = userRepo.findById(userId).orElseThrow();
         Trail t = trailRepo.findById(trailId).orElseThrow();
-        SessionLike sl = new SessionLike(null, id, s, t, u, liked, round);
+        SessionLike sl = new SessionLike();
+        sl.setSession(s);
+        sl.setTrail(t);
+        sl.setUser(u);
+        sl.setLiked(liked);
+        sl.setRound(round);
         return likeRepo.save(sl);
     }
 
-    public List<Trail> mutualLikes(SessionId id) {
-        List<SessionLike> likes = likeRepo.findBySessionId(id);
+    public List<Trail> mutualLikes(Long sessionId) {
+        Session s = sessionRepo.findById(sessionId).orElseThrow();
+        List<SessionLike> likes = likeRepo.findBySessionId(sessionId);
         Set<Long> u1 = likes.stream()
-                .filter(l -> l.getRound() == 1 && l.getUser().getId().equals(id.getUser1Id()) && l.getLiked())
+                .filter(l -> l.getRound() == 1 && l.getUser().getId().equals(s.getUser1Id()) && l.getLiked())
                 .map(l -> l.getTrail().getId())
                 .collect(Collectors.toSet());
         Set<Long> u2 = likes.stream()
-                .filter(l -> l.getRound() == 1 && l.getUser().getId().equals(id.getUser2Id()) && l.getLiked())
+                .filter(l -> l.getRound() == 1 && l.getUser().getId().equals(s.getUser2Id()) && l.getLiked())
                 .map(l -> l.getTrail().getId())
                 .collect(Collectors.toSet());
-        Set<Long> inter = new HashSet<>(u1);
-        inter.retainAll(u2);
-        resultRepo.deleteBySessionId(id);
-        List<SessionResult> results = inter.stream()
-                .map(tid -> new SessionResult(null, id,
-                        sessionRepo.findById(id).orElseThrow(),
-                        trailRepo.findById(tid).orElseThrow(),
-                        0))
-                .collect(Collectors.toList());
+        u1.retainAll(u2);
+        resultRepo.deleteBySessionId(sessionId);
+        List<SessionResult> results = u1.stream().map(tid -> {
+            SessionResult sr = new SessionResult();
+            sr.setSession(s);
+            sr.setTrail(trailRepo.findById(tid).orElseThrow());
+            sr.setFinalRank(0);
+            return sr;
+        }).collect(Collectors.toList());
         resultRepo.saveAll(results);
-        Session s = sessionRepo.findById(id).orElseThrow();
         s.setState(SessionState.RANKING);
         sessionRepo.save(s);
         return results.stream().map(SessionResult::getTrail).collect(Collectors.toList());
     }
 
-    public List<SessionResult> rankingRound(SessionId id, int round) {
-        List<SessionLike> roundLikes = likeRepo.findBySessionIdAndRound(id, round);
-        List<SessionResult> results = resultRepo.findBySessionId(id);
+    public List<SessionResult> rankingRound(Long sessionId, int round) {
+        List<SessionLike> roundLikes = likeRepo.findBySessionIdAndRound(sessionId, round);
+        List<SessionResult> results = resultRepo.findBySessionId(sessionId);
         roundLikes.stream()
                 .filter(SessionLike::getLiked)
-                .forEach(l -> results.stream()
-                        .filter(r -> r.getTrail().getId().equals(l.getTrail().getId()))
-                        .findFirst()
-                        .ifPresent(r -> r.setFinalRank(r.getFinalRank() + 1)));
+                .forEach(l ->
+                        results.stream()
+                                .filter(r -> r.getTrail().getId().equals(l.getTrail().getId()))
+                                .findFirst()
+                                .ifPresent(r -> r.setFinalRank(r.getFinalRank() + 1))
+                );
         resultRepo.saveAll(results);
         return results;
     }
 
-    public List<SessionResult> finalizeSession(SessionId id) {
-        List<SessionResult> results = resultRepo.findBySessionId(id);
+    public List<SessionResult> finalizeSession(Long sessionId) {
+        List<SessionResult> results = resultRepo.findBySessionId(sessionId);
         results.sort(Comparator.comparingInt(SessionResult::getFinalRank).reversed());
         int keep = Math.max(1, results.size() / 2);
         List<SessionResult> top = new ArrayList<>(results.subList(0, keep));
         resultRepo.deleteBySessionIdAndTrailIdNotIn(
-                id,
-                top.stream().map(r -> r.getTrail().getId()).toList()
+                sessionId,
+                top.stream().map(r -> r.getTrail().getId()).collect(Collectors.toList())
         );
-        Session s = sessionRepo.findById(id).orElseThrow();
+        Session s = sessionRepo.findById(sessionId).orElseThrow();
         s.setState(SessionState.COMPLETE);
         sessionRepo.save(s);
         return top;
