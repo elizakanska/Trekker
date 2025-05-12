@@ -7,12 +7,13 @@ $primary-color: #2e5939;
 
 .app-layout {
   height: 100vh;
-  background: $app-bg; // ensure full‐screen gold
+  background: $app-bg;
 }
 
 .menu-sidebar {
   background: $sidebar-bg !important;
   border-right: none !important;
+  z-index: 2;
 
   .sidebar-menu {
     background: transparent !important;
@@ -68,6 +69,7 @@ nz-footer {
   align-items: center;
   justify-content: space-between;
   position: relative;
+  z-index: 2;
 
   .header-left {
     display: flex;
@@ -137,6 +139,7 @@ nz-footer {
 .app-content {
   background: transparent;
   padding: 1rem;
+  overflow: auto;
 }
 
 .app-footer {
@@ -144,4 +147,5 @@ nz-footer {
   color: rgba($primary-color, 0.7);
   background: transparent;
   padding: 0.5rem;
+  z-index: 2;
 }

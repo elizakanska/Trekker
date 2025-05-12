@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface SessionLikeRepository extends JpaRepository<SessionLike, Long> {
-    List<SessionLike> findBySessionId(Long sessionId);
+    List<SessionLike> findBySession_Id(Long sessionId);
 
-    List<SessionLike> findBySessionIdAndRound(Long sessionId, int round);
+    List<SessionLike> findBySession_IdAndRound(Long sessionId, int round);
 }

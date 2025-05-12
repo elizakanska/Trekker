@@ -1,0 +1,52 @@
+<div class="filters">
+  <h2>Izvēlaties kā filtrēt takas</h2>
+
+  <div class="invite-code">
+    Jūsu pievienošanās kods: <span>{{ inviteCode }}</span>
+  </div>
+
+  <div class="filter-group">
+    <label>Sarežģītības:</label>
+    <div class="options">
+      <label
+        class="option"
+        *ngFor="let d of allDifficulties"
+        [class.selected]="selectedDifficulties.includes(d)"
+        (click)="toggleDifficulty(d)"
+      >
+        {{ d }}
+      </label>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <label>Biomas:</label>
+    <div class="options">
+      <label
+        class="option"
+        *ngFor="let b of allBiomes"
+        [class.selected]="selectedBiomes.includes(b)"
+        (click)="toggleBiome(b)"
+      >
+        {{ b }}
+      </label>
+    </div>
+  </div>
+
+  <button (click)="saveFilters()">Saglabāt filtrus</button>
+
+  <ng-container *ngIf="!user2Id; else ready">
+    <div class="waiting">
+      <h3>Gaidām drauga pieslēgšanos...</h3>
+      <ul>
+        <li *ngFor="let user of waitingUsers">{{ user }}</li>
+      </ul>
+    </div>
+  </ng-container>
+
+  <ng-template #ready>
+    <button (click)="proceed()" class="start-btn">
+      Sākt izvēlēties
+    </button>
+  </ng-template>
+</div>

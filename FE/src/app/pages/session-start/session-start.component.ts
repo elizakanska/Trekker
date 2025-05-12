@@ -7,13 +7,13 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {FormsModule} from '@angular/forms';
 
 @Component({
-  selector: 'app-choose-trail',
+  selector: 'app-session-start',
   standalone: true,
   imports: [CommonModule, NzButtonComponent, NzInputModule, FormsModule],
-  templateUrl: './choose-trail.component.html',
-  styleUrls: ['./choose-trail.component.scss']
+  templateUrl: './session-start.component.html',
+  styleUrls: ['./session-start.component.scss']
 })
-export class ChooseTrailComponent {
+export class SessionStartComponent {
   inviteCode = '';
 
   constructor(private sessionSvc: SessionService, private router: Router) {
@@ -21,13 +21,15 @@ export class ChooseTrailComponent {
 
   create() {
     this.sessionSvc.createSession().subscribe(sess => {
-      this.router.navigate(['/filters', sess.user1Id, sess.user2Id]);
+      const code = sess.inviteCode;
+      this.router.navigate(['/session', sess.user1Id, 'filters'], {queryParams: {code}});
     });
   }
 
   join() {
     this.sessionSvc.joinSession(this.inviteCode).subscribe(sess => {
-      this.router.navigate(['/filters', sess.user1Id, sess.user2Id]);
+      const code = sess.inviteCode;
+      this.router.navigate(['/session', sess.user1Id, 'filters'], {queryParams: {code}});
     });
   }
 }

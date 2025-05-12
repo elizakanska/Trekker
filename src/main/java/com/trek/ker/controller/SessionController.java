@@ -28,54 +28,53 @@ public class SessionController {
         return service.joinSession(invite, user2Id);
     }
 
-    @PatchMapping("/{sessionId}/filters")
+    @GetMapping("/{user1Id}/users")
+    public List<String> getUsers(@PathVariable Long user1Id) {
+        return service.getSessionUsernames(user1Id);
+    }
+
+    @PatchMapping("/{user1Id}/filters")
     public Session setFilters(
-            @PathVariable Long sessionId,
+            @PathVariable Long user1Id,
             @RequestParam Float min,
             @RequestParam Float max,
             @RequestParam String difficulty,
             @RequestParam String biome
     ) {
-        return service.setFilters(sessionId, min, max, difficulty, biome);
+        return service.setFilters(user1Id, min, max, difficulty, biome);
     }
 
-    @GetMapping("/{sessionId}/trails")
-    public List<Trail> begin(
-            @PathVariable Long sessionId
-    ) {
-        return service.beginRound(sessionId);
+    @GetMapping("/{user1Id}/trails")
+    public List<Trail> begin(@PathVariable Long user1Id) {
+        return service.beginRound(user1Id);
     }
 
-    @PostMapping("/{sessionId}/likes")
+    @PostMapping("/{user1Id}/likes")
     public SessionLike like(
-            @PathVariable Long sessionId,
+            @PathVariable Long user1Id,
             @RequestParam Long trailId,
             @RequestParam Long userId,
             @RequestParam boolean liked,
             @RequestParam int round
     ) {
-        return service.recordLike(sessionId, trailId, userId, liked, round);
+        return service.recordLike(user1Id, trailId, userId, liked, round);
     }
 
-    @GetMapping("/{sessionId}/mutual")
-    public List<Trail> mutual(
-            @PathVariable Long sessionId
-    ) {
-        return service.mutualLikes(sessionId);
+    @GetMapping("/{user1Id}/mutual")
+    public List<Trail> mutual(@PathVariable Long user1Id) {
+        return service.mutualLikes(user1Id);
     }
 
-    @PostMapping("/{sessionId}/rank")
+    @PostMapping("/{user1Id}/rank")
     public List<SessionResult> rank(
-            @PathVariable Long sessionId,
+            @PathVariable Long user1Id,
             @RequestParam int round
     ) {
-        return service.rankingRound(sessionId, round);
+        return service.rankingRound(user1Id, round);
     }
 
-    @GetMapping("/{sessionId}/final")
-    public List<SessionResult> finish(
-            @PathVariable Long sessionId
-    ) {
-        return service.finalizeSession(sessionId);
+    @GetMapping("/{user1Id}/final")
+    public List<SessionResult> finish(@PathVariable Long user1Id) {
+        return service.finalizeSession(user1Id);
     }
 }

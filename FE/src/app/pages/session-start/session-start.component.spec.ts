@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChooseTrailComponent } from './choose-trail.component';
+import {SessionStartComponent} from './session-start.component';
 
-describe('ChooseTrailComponent', () => {
-  let component: ChooseTrailComponent;
-  let fixture: ComponentFixture<ChooseTrailComponent>;
+describe('SessionStartComponent', () => {
+  let component: SessionStartComponent;
+  let fixture: ComponentFixture<SessionStartComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChooseTrailComponent]
+      imports: [SessionStartComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ChooseTrailComponent);
+    fixture = TestBed.createComponent(SessionStartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

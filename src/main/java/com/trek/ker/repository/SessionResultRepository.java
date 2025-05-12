@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface SessionResultRepository extends JpaRepository<SessionResult, Long> {
-    List<SessionResult> findBySessionId(Long sessionId);
+    List<SessionResult> findBySession_Id(Long sessionId);
 
-    void deleteBySessionId(Long sessionId);
+    void deleteBySession_Id(Long sessionId);
 
-    void deleteBySessionIdAndTrailIdNotIn(Long sessionId, List<Long> trailIds);
+    void deleteBySession_IdAndTrailIdNotIn(Long sessionId, List<Long> trailIds);
 }
