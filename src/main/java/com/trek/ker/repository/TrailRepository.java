@@ -10,3 +10,4 @@ import java.util.List;
 public interface TrailRepository extends JpaRepository<Trail, Long> {
     List<Trail> findByLengthBetweenAndDifficultyAndBiome(Float length, Float length2, String difficulty, String biome);
 }
+
