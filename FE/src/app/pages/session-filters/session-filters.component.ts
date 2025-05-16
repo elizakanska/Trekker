@@ -1,33 +1,55 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy, signal, computed} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {NzSliderModule} from 'ng-zorro-antd/slider';
+import {interval, Subject, takeUntil, switchMap, startWith} from 'rxjs';
+
 import {SessionService} from '../../services/session.service';
 import {TrailService} from '../../services/trail.service';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import {Session} from '../../models/session.model';
+import {Trail} from '../../models/trail.model';
 
 @Component({
   selector: 'app-session-filters',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NzSliderModule],
   templateUrl: './session-filters.component.html',
   styleUrls: ['./session-filters.component.scss']
 })
-export class SessionFiltersComponent implements OnInit {
+export class SessionFiltersComponent implements OnInit, OnDestroy {
   user1Id!: number;
-  user2Id: number | null = null;
   inviteCode = '';
-  waitingUsers: string[] = [];
+  private destroy$ = new Subject<void>();
 
-  minLength = 0;
-  maxLength = 0;
-  selectedMin = 0;
-  selectedMax = 0;
+  // all trails
+  trails = signal<Trail[]>([]);
 
-  allDifficulties: string[] = [];
-  selectedDifficulties: string[] = [];
+  // computed lists
+  allDifficulties = computed(() =>
+    Array.from(new Set(this.trails().map(t => t.difficulty)))
+  );
+  allBiomes = computed(() =>
+    Array.from(
+      new Set(
+        this.trails()
+          .flatMap(t => t.biome.split(',').map(b => b.trim().toLowerCase()))
+      )
+    ).map(b => b.charAt(0).toUpperCase() + b.slice(1))
+  );
 
-  allBiomes: string[] = [];
-  selectedBiomes: string[] = [];
+  // absolute length range from trails.length
+  absRange = signal<[number, number]>([0, 0]);
+  // user-selected length range
+  selRange = signal<[number, number]>([0, 0]);
+
+  // selected filters
+  selectedDifficulties = signal<string[]>([]);
+  selectedBiomes = signal<string[]>([]);
+
+  // session & users
+  session = signal<Session | null>(null);
+  waitingUsers = signal<string[]>([]);
 
   constructor(
     private route: ActivatedRoute,
@@ -41,52 +63,80 @@ export class SessionFiltersComponent implements OnInit {
     this.user1Id = +this.route.snapshot.paramMap.get('user1Id')!;
     this.inviteCode = this.route.snapshot.queryParamMap.get('code') || '';
 
-    this.trailService.getAll().subscribe(trails => {
-      const lengths = trails.map(t => t.length);
-      this.minLength = Math.min(...lengths);
-      this.maxLength = Math.max(...lengths);
-      this.selectedMin = this.minLength;
-      this.selectedMax = this.maxLength;
-
-      this.allDifficulties = [...new Set(trails.map(t => t.difficulty))];
-      this.selectedDifficulties = [...this.allDifficulties];
-
-      const flatBiomes = trails.flatMap(t => t.biome.split(',').map(b => b.trim().toLowerCase()));
-      this.allBiomes = Array.from(new Set(flatBiomes)).map(b => b.charAt(0).toUpperCase() + b.slice(1));
-      this.selectedBiomes = [...this.allBiomes];
-    });
-
-    setInterval(() => {
-      this.sessionService.getSessionUsers(this.user1Id).subscribe(users => {
-        this.waitingUsers = users.map(u => u.username);
-        const other = users.find(u => u.id !== this.user1Id);
-        this.user2Id = other ? other.id : null;
+    // load all trails once
+    this.trailService.getAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(trs => {
+        this.trails.set(trs);
+        const lengths = trs.map(t => t.length);
+        const minL = Math.min(...lengths);
+        const maxL = Math.max(...lengths);
+        this.absRange.set([minL, maxL]);
+        this.selRange.set([minL, maxL]);
+        this.selectedDifficulties.set(this.allDifficulties());
+        this.selectedBiomes.set(this.allBiomes());
       });
-    }, 3000);
+
+    // poll session
+    interval(3000)
+      .pipe(startWith(0), switchMap(() => this.sessionService.getCurrent(this.user1Id)), takeUntil(this.destroy$))
+      .subscribe(s => this.session.set(s));
+
+    // poll users
+    interval(3000)
+      .pipe(startWith(0), switchMap(() => this.sessionService.getUsers(this.user1Id)), takeUntil(this.destroy$))
+      .subscribe(u => this.waitingUsers.set(u));
+  }
+
+  updateSelRange([min, max]: [number, number]) {
+    const [absMin, absMax] = this.absRange();
+    if (max > min && min >= absMin && max <= absMax) {
+      this.selRange.set([+min.toFixed(1), +max.toFixed(1)]);
+    }
   }
 
   toggleDifficulty(d: string) {
-    const i = this.selectedDifficulties.indexOf(d);
-    i >= 0 ? this.selectedDifficulties.splice(i, 1) : this.selectedDifficulties.push(d);
+    const list = [...this.selectedDifficulties()];
+    const idx = list.indexOf(d);
+    if (idx > -1) list.splice(idx, 1);
+    else list.push(d);
+    this.selectedDifficulties.set(list);
   }
 
   toggleBiome(b: string) {
-    const i = this.selectedBiomes.indexOf(b);
-    i >= 0 ? this.selectedBiomes.splice(i, 1) : this.selectedBiomes.push(b);
+    const list = [...this.selectedBiomes()];
+    const idx = list.indexOf(b);
+    if (idx > -1) list.splice(idx, 1);
+    else list.push(b);
+    this.selectedBiomes.set(list);
   }
 
-  saveFilters(): void {
-    this.sessionService.setFilters(this.user1Id, {
-      min: this.selectedMin,
-      max: this.selectedMax,
-      difficulties: this.selectedDifficulties,
-      biomes: this.selectedBiomes
-    }).subscribe();
+  saveFilters() {
+    const [min, max] = this.selRange();
+    this.sessionService
+      .setFilters(
+        this.user1Id,
+        min,
+        max,
+        this.selectedDifficulties().join(','),
+        this.selectedBiomes().join(',')
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 
-  proceed(): void {
-    if (this.user2Id) {
-      this.router.navigate(['/session', this.user1Id, this.user2Id, 'choosing']);
+  proceed() {
+    const sess = this.session();
+    if (sess?.user2Id) {
+      this.router.navigate(
+        ['/session', this.user1Id, 'choose'],
+        {queryParams: {code: this.inviteCode}}
+      );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

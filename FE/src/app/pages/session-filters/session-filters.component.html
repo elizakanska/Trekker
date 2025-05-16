@@ -1,52 +1,78 @@
-<div class="filters">
-  <h2>Izvēlaties kā filtrēt takas</h2>
-
-  <div class="invite-code">
-    Jūsu pievienošanās kods: <span>{{ inviteCode }}</span>
-  </div>
-
-  <div class="filter-group">
-    <label>Sarežģītības:</label>
-    <div class="options">
-      <label
-        class="option"
-        *ngFor="let d of allDifficulties"
-        [class.selected]="selectedDifficulties.includes(d)"
-        (click)="toggleDifficulty(d)"
-      >
-        {{ d }}
-      </label>
+<div class="box">
+  <div class="filters">
+    <h2>Izvēlaties kā filtrēt takas</h2>
+    <div class="invite-code">
+      Jūsu pievienošanās kods: <span>{{ inviteCode }}</span>
     </div>
-  </div>
 
-  <div class="filter-group">
-    <label>Biomas:</label>
-    <div class="options">
-      <label
-        class="option"
-        *ngFor="let b of allBiomes"
-        [class.selected]="selectedBiomes.includes(b)"
-        (click)="toggleBiome(b)"
-      >
-        {{ b }}
-      </label>
+    <!-- Length slider -->
+    <div class="filter-group">
+      <label>Garuma diapazons (km):</label>
+      <nz-slider
+        [nzRange]="true"
+        [nzMin]="absRange()[0]"
+        [nzMax]="absRange()[1]"
+        [nzStep]="0.1"
+        [ngModel]="selRange()"
+        (ngModelChange)="updateSelRange($event)"
+      ></nz-slider>
+      <div class="range-labels">
+        <span>{{ selRange()[0] | number:'1.1-1' }}</span>
+        <span>–</span>
+        <span>{{ selRange()[1] | number:'1.1-1' }}</span>
+      </div>
     </div>
-  </div>
 
-  <button (click)="saveFilters()">Saglabāt filtrus</button>
-
-  <ng-container *ngIf="!user2Id; else ready">
-    <div class="waiting">
-      <h3>Gaidām drauga pieslēgšanos...</h3>
-      <ul>
-        <li *ngFor="let user of waitingUsers">{{ user }}</li>
-      </ul>
+    <!-- Difficulties -->
+    <div class="filter-group">
+      <label>Sarežģītības:</label>
+      <div class="options">
+        <label
+          class="option"
+          *ngFor="let d of allDifficulties()"
+          [class.selected]="selectedDifficulties().includes(d)"
+          (click)="toggleDifficulty(d)"
+        >
+          {{ d }}
+        </label>
+      </div>
     </div>
-  </ng-container>
 
-  <ng-template #ready>
-    <button (click)="proceed()" class="start-btn">
-      Sākt izvēlēties
-    </button>
-  </ng-template>
+    <!-- Biomes -->
+    <div class="filter-group">
+      <label>Biomas:</label>
+      <div class="options">
+        <label
+          class="option"
+          *ngFor="let b of allBiomes()"
+          [class.selected]="selectedBiomes().includes(b)"
+          (click)="toggleBiome(b)"
+        >
+          {{ b }}
+        </label>
+      </div>
+    </div>
+
+    <button (click)="saveFilters()">Saglabāt filtrus</button>
+
+    <!-- Waiting / Proceed -->
+    <ng-container *ngIf="session() as sess">
+      <ng-container *ngIf="!sess.user2Id; else ready">
+        <div class="waiting">
+          <h3>Gaidām drauga pieslēgšanos...</h3>
+          <ul>
+            <li *ngFor="let u of waitingUsers()">{{ u }}</li>
+          </ul>
+          <button class="refresh-btn">
+            Pārbaudīt statusu
+          </button>
+        </div>
+      </ng-container>
+      <ng-template #ready>
+        <button (click)="proceed()" class="start-btn">
+          Sākt izvēlēties
+        </button>
+      </ng-template>
+    </ng-container>
+  </div>
 </div>

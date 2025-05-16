@@ -62,6 +62,12 @@ public class SessionService {
         return sessionRepo.save(s);
     }
 
+    public Session getCurrentSession(Long userId) {
+        return sessionRepo.findTopByUser1IdOrUser2IdOrderByIdDesc(userId, userId)
+                .orElseThrow(() -> new NoSuchElementException("No session for user " + userId));
+    }
+
+
     public List<String> getSessionUsernames(Long user1Id) {
         List<Session> sessions = sessionRepo.findByUser1IdOrderByIdDesc(user1Id);
         if (sessions.isEmpty()) throw new NoSuchElementException("No session for user " + user1Id);
@@ -93,8 +99,13 @@ public class SessionService {
         List<Session> sessions = sessionRepo.findByUser1IdOrderByIdDesc(user1Id);
         Session s = sessions.isEmpty() ? null : sessions.get(0);
         if (s == null) throw new NoSuchElementException("No session for user " + user1Id);
-        List<Trail> list = trailRepo.findByLengthBetweenAndDifficultyAndBiome(
-                s.getLengthMin(), s.getLengthMax(), s.getDifficulty(), s.getBiome());
+
+        List<Trail> list = trailRepo.findByLengthBetweenAndDifficultyAndBiomeContainingIgnoreCase(
+                s.getLengthMin(),
+                s.getLengthMax(),
+                s.getDifficulty(),
+                s.getBiome());
+
         Collections.shuffle(list);
         s.setState(SessionState.IN_PROGRESS);
         sessionRepo.save(s);

@@ -28,6 +28,11 @@ public class SessionController {
         return service.joinSession(invite, user2Id);
     }
 
+    @GetMapping("/current")
+    public Session getCurrent(@RequestParam Long userId) {
+        return service.getCurrentSession(userId);
+    }
+
     @GetMapping("/{user1Id}/users")
     public List<String> getUsers(@PathVariable Long user1Id) {
         return service.getSessionUsernames(user1Id);

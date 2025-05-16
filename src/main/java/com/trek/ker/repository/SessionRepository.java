@@ -10,4 +10,6 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     Optional<Session> findByInviteCode(String inviteCode);
 
     List<Session> findByUser1IdOrderByIdDesc(Long user1Id);
+
+    Optional<Session> findTopByUser1IdOrUser2IdOrderByIdDesc(Long userId, Long userId1);
 }
