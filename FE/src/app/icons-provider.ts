@@ -7,7 +7,9 @@ import {
   UserOutline,
   WifiOutline,
   TeamOutline,
-  UnorderedListOutline
+  UnorderedListOutline,
+  HeartOutline,
+  RightOutline,
 } from '@ant-design/icons-angular/icons';
 
 export const icons = [
@@ -19,5 +21,7 @@ export const icons = [
   UserOutline,
   WifiOutline,
   TeamOutline,
-  UnorderedListOutline
+  UnorderedListOutline,
+  HeartOutline,
+  RightOutline,
 ];

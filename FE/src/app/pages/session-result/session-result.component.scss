@@ -1,0 +1,75 @@
+@use 'sass:color';
+
+.box {
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.result-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e8e8e8;
+
+    .result-thumb {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-right: 1rem;
+    }
+
+    .info {
+      flex: 1;
+
+      h3 {
+        margin: 0 0 0.25rem;
+        font-size: 1rem;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #666;
+      }
+    }
+
+    button {
+      margin-left: auto;
+
+      background: #57A253;
+      color: black;
+      border: none;
+      border-radius: 4px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      transition: background 0.2s;
+
+      nz-icon {
+        margin-right: 0.4rem;
+        font-size: 1rem;
+        color: #fff;
+      }
+
+      &:hover {
+        background: color.adjust(#57A253, $lightness: -10%);
+
+      }
+    }
+  }
+}
+
+.retry-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+}

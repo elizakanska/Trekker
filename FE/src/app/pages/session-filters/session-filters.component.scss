@@ -44,6 +44,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.8rem;
+        justify-content: center;
       }
 
       .option {
@@ -98,14 +99,23 @@
 button {
   background: #2e5939;
   color: white;
+  border: none;
   margin: 5%;
   padding: 1rem;
   font-size: 1rem;
   border-radius: 25px;
+  height: fit-content;
   transition: transform 0.2s, background 0.2s;
 
   &:hover {
     background: #1d3d27;
     transform: translateY(-2px);
   }
+}
+
+button.small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  border-radius: 12px;
+  margin: 0.5rem;
 }

@@ -2,11 +2,10 @@
   <div class="trail-item" *ngFor="let fav of favorites()">
     <img
       class="trail-thumb"
-      [ngSrc]="fav.trail.image"
+      src="{{fav.trail.image}}"
       [alt]="fav.trail.name"
       width="120"
       height="120"
-      priority
     />
     <div class="trail-info">
       <h3>{{ fav.trail.name }}</h3>

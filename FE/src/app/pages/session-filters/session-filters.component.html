@@ -26,6 +26,10 @@
     <!-- Difficulties -->
     <div class="filter-group">
       <label>Sarežģītības:</label>
+      <div class="filter-controls">
+        <button class="small" (click)="selectAllDifficulties()">Iezīmēt visas</button>
+        <button class="small" (click)="clearAllDifficulties()">Notīrīt visas</button>
+      </div>
       <div class="options">
         <label
           class="option"
@@ -41,6 +45,10 @@
     <!-- Biomes -->
     <div class="filter-group">
       <label>Biomas:</label>
+      <div class="filter-controls">
+        <button class="small" (click)="selectAllBiomes()">Iezīmēt visas</button>
+        <button class="small" (click)="clearAllBiomes()">Notīrīt visas</button>
+      </div>
       <div class="options">
         <label
           class="option"
@@ -60,12 +68,6 @@
       <ng-container *ngIf="!sess.user2Id; else ready">
         <div class="waiting">
           <h3>Gaidām drauga pieslēgšanos...</h3>
-          <ul>
-            <li *ngFor="let u of waitingUsers()">{{ u }}</li>
-          </ul>
-          <button class="refresh-btn">
-            Pārbaudīt statusu
-          </button>
         </div>
       </ng-container>
       <ng-template #ready>

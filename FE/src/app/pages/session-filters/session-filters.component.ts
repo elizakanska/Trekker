@@ -22,10 +22,8 @@ export class SessionFiltersComponent implements OnInit, OnDestroy {
   inviteCode = '';
   private destroy$ = new Subject<void>();
 
-  // all trails
   trails = signal<Trail[]>([]);
 
-  // computed lists
   allDifficulties = computed(() =>
     Array.from(new Set(this.trails().map(t => t.difficulty)))
   );
@@ -38,18 +36,13 @@ export class SessionFiltersComponent implements OnInit, OnDestroy {
     ).map(b => b.charAt(0).toUpperCase() + b.slice(1))
   );
 
-  // absolute length range from trails.length
   absRange = signal<[number, number]>([0, 0]);
-  // user-selected length range
   selRange = signal<[number, number]>([0, 0]);
 
-  // selected filters
   selectedDifficulties = signal<string[]>([]);
   selectedBiomes = signal<string[]>([]);
 
-  // session & users
   session = signal<Session | null>(null);
-  waitingUsers = signal<string[]>([]);
 
   constructor(
     private route: ActivatedRoute,
@@ -63,7 +56,6 @@ export class SessionFiltersComponent implements OnInit, OnDestroy {
     this.user1Id = +this.route.snapshot.paramMap.get('user1Id')!;
     this.inviteCode = this.route.snapshot.queryParamMap.get('code') || '';
 
-    // load all trails once
     this.trailService.getAll()
       .pipe(takeUntil(this.destroy$))
       .subscribe(trs => {
@@ -73,19 +65,14 @@ export class SessionFiltersComponent implements OnInit, OnDestroy {
         const maxL = Math.max(...lengths);
         this.absRange.set([minL, maxL]);
         this.selRange.set([minL, maxL]);
-        this.selectedDifficulties.set(this.allDifficulties());
-        this.selectedBiomes.set(this.allBiomes());
+        // start with no filters selected
+        this.selectedDifficulties.set([]);
+        this.selectedBiomes.set([]);
       });
 
-    // poll session
     interval(3000)
       .pipe(startWith(0), switchMap(() => this.sessionService.getCurrent(this.user1Id)), takeUntil(this.destroy$))
       .subscribe(s => this.session.set(s));
-
-    // poll users
-    interval(3000)
-      .pipe(startWith(0), switchMap(() => this.sessionService.getUsers(this.user1Id)), takeUntil(this.destroy$))
-      .subscribe(u => this.waitingUsers.set(u));
   }
 
   updateSelRange([min, max]: [number, number]) {
@@ -111,6 +98,22 @@ export class SessionFiltersComponent implements OnInit, OnDestroy {
     this.selectedBiomes.set(list);
   }
 
+  selectAllDifficulties() {
+    this.selectedDifficulties.set(this.allDifficulties());
+  }
+
+  clearAllDifficulties() {
+    this.selectedDifficulties.set([]);
+  }
+
+  selectAllBiomes() {
+    this.selectedBiomes.set(this.allBiomes());
+  }
+
+  clearAllBiomes() {
+    this.selectedBiomes.set([]);
+  }
+
   saveFilters() {
     const [min, max] = this.selRange();
     this.sessionService
@@ -129,7 +132,7 @@ export class SessionFiltersComponent implements OnInit, OnDestroy {
     const sess = this.session();
     if (sess?.user2Id) {
       this.router.navigate(
-        ['/session', this.user1Id, 'choose'],
+        ['/session/choosing'],
         {queryParams: {code: this.inviteCode}}
       );
     }

@@ -1,1 +1,24 @@
-<p>session-result works!</p>
+<div class="box">
+  <h2>Jūsu kopīgās takas</h2>
+  <ul class="result-list">
+    <li *ngFor="let t of resultTrails()">
+      <img [src]="t.image" [alt]="t.name" class="result-thumb"/>
+      <div class="info">
+        <h3>{{ t.name }}</h3>
+        <p>Garums: {{ t.length | number:'1.1-1' }} km</p>
+      </div>
+      <button nz-button nzType="default" (click)="addFavorite(t)">
+        <i nz-icon nzType="heart"></i>
+        Pievienot mīļākajām takām
+      </button>
+    </li>
+  </ul>
+  <button
+    nz-button
+    nzType="primary"
+    class="retry-btn"
+    (click)="retry()"
+  >
+    Mēģināt vēlreiz
+  </button>
+</div>

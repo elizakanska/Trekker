@@ -1,6 +1,5 @@
 import { Component, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgOptimizedImage } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { Favorite } from '../../models/favorite.model';
@@ -12,7 +11,7 @@ import {RouterLink} from '@angular/router';
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage, NzButtonModule, NzIconModule, RouterLink],
+  imports: [CommonModule, NzButtonModule, NzIconModule, RouterLink],
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.scss']
 })
